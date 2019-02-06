@@ -10,7 +10,7 @@ var dogsRouter = require('./routes/dogsRouter');
 var animalsRouter = require('./routes/animalsRouter');
 var articlesRouter = require('./routes/articlesRouter');
 
-var app = express();
+var app = express(); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
