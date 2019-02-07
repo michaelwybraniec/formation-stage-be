@@ -21,32 +21,54 @@
 </style>
 
 <body>
-    <div class="container mt-5">
-        <div class="row">
+    <div class="container mt-2">
+        <div class="row mb-5">
+            <div class="col-12 col-sm-8 mx-auto text-right">
+                <a href="http://localhost:3000/articles/write">
+                    <small>Write</small>
+                </a>
+                <small>/</small>
+                <a href="http://localhost:3000/articles/read">
+                    <small>Read</small>
+                </a>
+                <small>/</small>
+                <a href="http://localhost:3000/articles/login">
+                    <small>Login</small>
+                </a>
+                <small>/</small>
+                <a href="http://localhost:3000/articles/registration">
+                    <small>Register</small>
+                </a>
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col-12 col-sm-8 mb-2 mx-auto text-left">
+                <h2>Your posts:</h2>
+                <small>Have a new idea? - write a
+                    <a href="http://localhost:3000/articles/write">new post</a>.</small>
+
+            </div>
             <div class="col-12 col-sm-8 mx-auto bg-light border rounded">
 
                 <div class="row">
-
                     <div class="col-12 mt-2">
-
-                        <h3>Posts:</h3>
                         <div class="col-12 mt-2 mb-2 bg-white text-dark border rounded">
                             <p class="font-weight-normal" id="get-title-result"></p>
-                            <p class="font-weight-light" id="get-content-result"></p>  
-                        </div>   
+                            <p class="font-weight-light" id="get-content-result"></p>
+                        </div>
                     </div>
-
                 </div>
 
-
                 <div class="row">
+
                     <div class="col-12 col-sm-8 mb-2 mt-2 text-left">
                         <h7 id="post-confirmation"></h7>
                     </div>
 
                     <div class="col-12 col-sm-4 mb-2 mt-2">
-                        <a href="http://localhost:3000/articles/write" class="btn btn-link btn-sm btn-block">back</a>
-                        <!-- post() -->
+                        <a href="http://localhost:3000/articles/write" class="btn btn-link btn-sm btn-block">go back</a>
+
                     </div>
 
                 </div>
@@ -56,10 +78,6 @@
 </body>
 
 <script>
-
-
-
-
 
     function get() {
         axios.get("/articles/")
@@ -72,11 +90,9 @@
 
                     var title = "<br><br><h6>" + "Title: " + response.data[i].postTitle + "</h6>";
                     var content = "<p>" + response.data[i].postContent + "</p><hr>";
-
                     var result = title + content;
 
                     console.log(result);
-
                     document.getElementById("get-title-result").innerHTML += result;
                 }
             })
@@ -87,12 +103,10 @@
 
     get();
 
+
     // document.getElementById("get-title-result").innerHTML = JSON.stringify(
 
-
     // document.getElementById("get-title-result").innerHTML = JSON.stringify(response.data[0].postTitle + "<br>" + response.data[0].postContent); 
-
-
     // function get() {
     //     var url = document.getElementById("get-input").value;
 

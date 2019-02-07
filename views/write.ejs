@@ -11,54 +11,65 @@
 </head>
 
 <style>
-    /* .row{
+    /* .row {
         border: 1px solid red;
     }
-    div[class^="col-"]{
+
+    div[class^="col-"] {
         border: 1px solid green;
     } */
 </style>
 
 <body>
-    <div class="container mt-5">
+        <div class="container mt-2">
+                <div class="row mb-5">
+                    <div class="col-12 col-sm-8 mx-auto text-right">
+                            <a href="http://localhost:3000/articles/write"><small>Write</small></a>
+                            <small>/</small>
+                            <a href="http://localhost:3000/articles/read"><small>Read</small></a>
+                            <small>/</small>
+                            <a href="http://localhost:3000/articles/login"><small>Login</small></a>
+                            <small>/</small>
+                            <a href="http://localhost:3000/articles/registration"><small>Register</small></a>           
+                    </div>
+                </div>
+
+        <div class="row mb-1">
+            <div class="col-12 col-sm-8 mx-auto">
+                <h5 for="post-title-input">New post:</h5>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-12 col-sm-8 mx-auto bg-light border rounded">
-
                 <div class="row">
-
-                    <div class="col-12 mt-2">
-                        <h5 for="post-title-input">New post:</h5>
+                    <div class="col-12 mt-3">
                         <input type="text" id="post-title-input" class="form-control" placeholder="title:">
                     </div>
-
                 </div>
 
                 <div class="row">
-
                     <div class="col-12 mt-2">
                         <textarea type="text" id="post-content-input" rows="6" class="form-control" placeholder="content:"></textarea>
                     </div>
-
                 </div>
 
                 <div class="row">
-
-                    <div class="col-12 col-sm-8 mb-2 mt-2 text-left">
-                        <h7 id="post-confirmation"></h7>
+                    <div class="col-12 mb-2 mt-2 text-left">
+                        <small id="post-confirmation"></small>
                     </div>
-
-                    <div class="col-12 col-sm-4 mb-2 mt-2">
-                        <button onclick="post()" class="btn btn-success btn-md btn-block">Submit</button>
-                    </div>
-
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-12 mb-2 text-right">
+            <div class="col-12 col-sm-8 mx-auto">
+                <div class="row mt-3">          
+                    <div class="col-12 col-sm-8 mx-auto text-right">
                         <button onclick="window.location='http://localhost:3000/articles/read';" class="btn btn-link btn-sm">view posts</button>
                     </div>
+                    <div class="col-12 col-sm-4 mx-right">
+                        <button onclick="post()" class="btn btn-success btn-md btn-block">Submit</button>
+                    </div>             
                 </div>
-
             </div>
         </div>
     </div>
