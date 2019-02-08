@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
@@ -9,7 +8,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
-
 <style>
     /* .row {
         border: 1px solid red;
@@ -18,21 +16,26 @@
     div[class^="col-"] {
         border: 1px solid green;
     } */
+
+    #color-adj {
+        background-color: #F2F2F2;
+    }
 </style>
 
 <body>
-        <div class="container mt-2">
-                <div class="row mb-5">
-                    <div class="col-12 col-sm-8 mx-auto text-right">
-                            <a href="http://localhost:3000/articles/write"><small>Write</small></a>
-                            <small>/</small>
-                            <a href="http://localhost:3000/articles/read"><small>Read</small></a>
-                            <small>/</small>
-                            <a href="http://localhost:3000/articles/login"><small>Login</small></a>
-                            <small>/</small>
-                            <a href="http://localhost:3000/articles/registration"><small>Register</small></a>           
-                    </div>
-                </div>
+    <div class="container mt-2">
+        <div class="row mb-5">
+            <div class="col-12 col-sm-8 mx-auto text-right">
+                <a href="http://localhost:3000/articles/write">
+                    <small>Write</small></a>
+                <a href="http://localhost:3000/articles/read">
+                    <small>Read</small></a>
+                <a href="http://localhost:3000/login">
+                    <small>Login</small></a>
+                <a href="http://localhost:3000/registration">
+                    <small>Register</small></a>
+            </div>
+        </div>
 
         <div class="row mb-1">
             <div class="col-12 col-sm-8 mx-auto">
@@ -41,7 +44,8 @@
         </div>
 
         <div class="row">
-            <div class="col-12 col-sm-8 mx-auto bg-light border rounded">
+            <div id="color-adj" class="col-12 col-sm-8 mx-auto border rounded">
+
                 <div class="row">
                     <div class="col-12 mt-3">
                         <input type="text" id="post-title-input" class="form-control" placeholder="title:">
@@ -59,16 +63,20 @@
                         <small id="post-confirmation"></small>
                     </div>
                 </div>
+
             </div>
 
             <div class="col-12 col-sm-8 mx-auto">
-                <div class="row mt-3">          
-                    <div class="col-12 col-sm-8 mx-auto text-right">
-                        <button onclick="window.location='http://localhost:3000/articles/read';" class="btn btn-link btn-sm">view posts</button>
+
+                <div class="row mt-3">
+                    <div class="col-12 col-sm-8 text-right">
+                        <button onclick="window.location='http://localhost:3000/articles/read';" class="btn btn-link btn-sm">
+                            <small>view posts</small></button>
                     </div>
+
                     <div class="col-12 col-sm-4 mx-right">
-                        <button onclick="post()" class="btn btn-success btn-md btn-block">Submit</button>
-                    </div>             
+                        <button onclick="post()" class="btn btn-dark btn-md btn-block">Post</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,6 +84,7 @@
 </body>
 
 <script>
+
     function get() {
         var url = document.getElementById("get-input").value;
         axios.get(url)
@@ -86,7 +95,6 @@
                 console.log(error);
             });
     };
-
 
     function post() {
         var title = document.getElementById("post-title-input").value;
@@ -100,14 +108,14 @@
         axios.post("/articles", data)
             .then(function (response) {
                 document.getElementById("post-confirmation").innerHTML = response.data;
+                setTimeout(function () {
+                        window.location = "/articles/write";
+                    }, 500);
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
 
-
-
 </script>
-
 </html>

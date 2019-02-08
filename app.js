@@ -5,9 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/indexRouter');
-var usersRouter = require('./routes/usersRouter');
-var dogsRouter = require('./routes/dogsRouter');
-var animalsRouter = require('./routes/animalsRouter');
 var articlesRouter = require('./routes/articlesRouter');
 
 var app = express(); 
@@ -29,10 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // "http://localhost:3000" + ...
 
 app.use('/', indexRouter);        // "http://localhost:3000/"
-app.use('/users', usersRouter);   // "http://localhost:3000/users"
-app.use('/dogs', dogsRouter);
-app.use('/animals', animalsRouter);
 app.use('/articles', articlesRouter);
+
 
 // ================================================================
 //                         </IMPORTANT>

@@ -18,43 +18,37 @@
     div[class^="col-"] {
         border: 1px solid green;
     } */
+    
+    #color-adj {
+        background-color: #ecf9ec;
+    }
 </style>
 
 <body>
 
     <div class="container mt-2">
-
         <div class="row mb-5">
             <div class="col-12 col-sm-8 mx-auto text-right">
                 <a href="http://localhost:3000/articles/write">
-                    <small>Write</small>
-                </a>
-                <small>/</small>
+                    <small>Write</small></a>
                 <a href="http://localhost:3000/articles/read">
-                    <small>Read</small>
-                </a>
-                <small>/</small>
-                <a href="http://localhost:3000/articles/login">
-                    <small>Login</small>
-                </a>
-                <small>/</small>
-                <a href="http://localhost:3000/articles/registration">
-                    <small>Register</small>
-                </a>
+                    <small>Read</small></a>
+                <a href="http://localhost:3000/login">
+                    <small>Login</small></a>
+                <a href="http://localhost:3000/registration">
+                    <small>Register</small></a>
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-12 col-sm-8 mx-auto text-left">
+
                 <h2>Login</h2>
-                <p>
-                    <small>Please fill in this form to login.</small>
-                </p>
+                <p><small>Please fill in this form to login.</small></p>
+
             </div>
             <div class="col-12 col-sm-8 mx-auto bg-light border rounded">
-                <div class="form-group row mt-1">
-                </div>
+
                 <!-- ////////////////////////////////////////////// Username -->
                 <div class="form-group row mt-3">
                     <label for="username-input" class="col-12 col-sm-4 col-form-label">Username:</label>
@@ -65,7 +59,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <!-- ////////////////////////////////////////////// Password -->
                 <div class="form-group row">
@@ -78,19 +71,25 @@
                     </div>
                 </div>
 
+                <!-- ////////////////////////////////////////////// Submit button -->
                 <div class="form-group row mx-center">
-
-                    <!-- ////////////////////////////////////////////// Submit button -->
                     <div class="col-6 col-sm-4 mx-auto">
                         <button type="submit" onclick="collectRegistrationData()" class="btn btn-success btn-md btn-block">Submit</button>
                     </div>
                 </div>
             </div>
+
+            <!-- ////////////////////////////////////////////////// Footer -->
             <div class="col-12 col-sm-8 mx-auto mt-2 text-right">
-                <p>
-                    <small>Don't have an account?
-                        <a href="http://localhost:3000/articles/registration">Register</a>.</small>
-                </p>
+                <small>Don't have an account?
+                    <a href="http://localhost:3000/registration">Register</a>.
+                </small>
+            </div>
+
+            <div class="col-12 col-sm-8 mx-auto mt-2 text-right">
+                <a href="http://localhost:3000/registration">
+                    <p id="login-error"></p>
+                </a>
             </div>
         </div>
     </div>
@@ -99,14 +98,16 @@
 
 <script>
 
-    function checkNotEmpty(input, inputName) {
+    function isEmpty(input, inputName) {
         var errorDiv = document.getElementById(inputName + "-invalid-feedback");
         if (input === undefined || input === null || input === "") {
             errorDiv.classList.remove("d-none");
             errorDiv.classList.add("d-block");
+            return true;
         } else {
             errorDiv.classList.add("d-none");
             errorDiv.classList.remove("d-block");
+            return false;
         }
     }
 
@@ -115,27 +116,38 @@
         var username = document.getElementById("username-input").value;
         var password = document.getElementById("password-input").value;
 
-        checkNotEmpty(username, "username");
-        checkNotEmpty(password, "password");
+        var emptyField = false;
+        emptyField = isEmpty(username, "username") |
+            isEmpty(password, "password");
+
+        if (emptyField) return;
+        // Same as 'if(emptyField === true) return;'
 
         var obj = {
             "username": username,
             "password": password,
         };
-        console.log(obj);
         post(obj);
     }
 
 
     function post(data) {
-        axios.post("/articles/login", data)
+        axios.post("/login", data)
             .then(function (response) {
-                console.log(obj);
-                setTimeout(function () {
-                    window.location = "/articles/read";
-                }, 1000);
+                console.log(response.status)
+                if (response.status === 200) {
+                    console.log(response.data)
+
+                    document.getElementById("login-error").innerHTML
+                        = "<small class='text-success'><b>Sweet!</b><small>";
+                    setTimeout(function () {
+                        window.location = "/articles/write";
+                    }, 1000);
+                }
             })
             .catch(function (error) {
+                document.getElementById("login-error").innerHTML
+                    = "<small class='text-danger'><b>Register or try again.</b><small>";
                 console.log(error);
             });
     };

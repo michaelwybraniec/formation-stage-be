@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
@@ -18,6 +17,10 @@
     div[class^="col-"] {
         border: 1px solid green;
     } */
+
+    #color-adj {
+        background-color: #F2F2F2;
+    }
 </style>
 
 <body>
@@ -25,57 +28,39 @@
         <div class="row mb-5">
             <div class="col-12 col-sm-8 mx-auto text-right">
                 <a href="http://localhost:3000/articles/write">
-                    <small>Write</small>
-                </a>
-                <small>/</small>
+                    <small>Write</small></a>
                 <a href="http://localhost:3000/articles/read">
-                    <small>Read</small>
-                </a>
-                <small>/</small>
-                <a href="http://localhost:3000/articles/login">
-                    <small>Login</small>
-                </a>
-                <small>/</small>
-                <a href="http://localhost:3000/articles/registration">
-                    <small>Register</small>
-                </a>
+                    <small>Read</small></a>
+                <a href="http://localhost:3000/login">
+                    <small>Login</small></a>
+                <a href="http://localhost:3000/registration">
+                    <small>Register</small></a>
             </div>
         </div>
-
         <div class="row mb-1">
             <div class="col-12 col-sm-8 mb-2 mx-auto text-left">
                 <h2>Your posts:</h2>
-                <small>Have a new idea? - write a
-                    <a href="http://localhost:3000/articles/write">new post</a>.</small>
-
+                <small>Have an idea? - write a
+                    <a href="http://localhost:3000/articles/write">new post.</a>
+                </small>
             </div>
-            <div class="col-12 col-sm-8 mx-auto bg-light border rounded">
-
+            <div id="color-adj" class="col-12 col-sm-8 mx-auto border rounded">
                 <div class="row">
-                    <div class="col-12 mt-2">
+                    <div class="col-12 mt-2 mb-2">
                         <div class="col-12 mt-2 mb-2 bg-white text-dark border rounded">
+
                             <p class="font-weight-normal" id="get-title-result"></p>
                             <p class="font-weight-light" id="get-content-result"></p>
+
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-12 col-sm-8 mb-2 mt-2 text-left">
-                        <h7 id="post-confirmation"></h7>
-                    </div>
-
-                    <div class="col-12 col-sm-4 mb-2 mt-2">
-                        <a href="http://localhost:3000/articles/write" class="btn btn-link btn-sm btn-block">go back</a>
-
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
+
 </body>
+
 
 <script>
 
@@ -103,7 +88,6 @@
 
     get();
 
-
     // document.getElementById("get-title-result").innerHTML = JSON.stringify(
 
     // document.getElementById("get-title-result").innerHTML = JSON.stringify(response.data[0].postTitle + "<br>" + response.data[0].postContent); 
@@ -120,5 +104,4 @@
     // };
 
 </script>
-
 </html>
