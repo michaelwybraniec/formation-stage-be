@@ -1,28 +1,18 @@
 var express = require('express');
 var router = express.Router();
-var users = [];
-
-function getUser(username) {
-  for (var i = 0; i < users.length; i++) {
-    var user = users[i];
-
-    if (user.username === username) {
-      return user;
-    }
-  }
-};
-
+var Database = require('../db/Database.js');
+var passport = require('passport');
 
 /** ======================== PAGES ============================ */
 
 router.get('/registration', function (req, res, next) {
-  res.render("registration");
+  if(req.user) res.render('write');
+  else res.render("registration");
 });
 
 router.get('/login', function (req, res, next) {
-  res.render("login");
+  res.render("login"); 
 });
-
 
 /** ======================== DATA ============================ */
 
@@ -30,25 +20,34 @@ router.get('/login', function (req, res, next) {
 router.post('/registration', function (req, res, next) {
   console.log(req.body);
 
-  var user = getUser(req.body.username);
+  // If user already exists, return an error
+  var user = Database.getUser(req.body.username);
   if (user) res.sendStatus(500);
  
-  users.push(req.body);
-  console.log("Users arrays after registration : ");
-  console.log(users);
+  Database.addUser(req.body);
+
+  console.log(Database.users);
+
   res.sendStatus(200);
 });
 
 
 // ==== Login 
 router.post('/login', function (req, res, next) {
-  var user = getUser(req.body.username);
+  var user = Database.getUser(req.body.username);
 
-  // User does not exist or passwords don't match
+  // If user does not exist or passwords don't match, return error
   if (!user || user.password !== req.body.password) {
     res.sendStatus(500);
   }
-  res.send(user.color);
+
+  // Then pass the user to Passport so that Passport can log in him
+  passport.authenticate('local', function(err, user, info) {
+    req.logIn(user, function(err) {
+      if (err) return next(err);
+      return res.sendStatus(200);
+    });
+  })(req, res, next);
 });
 
 module.exports = router;

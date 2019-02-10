@@ -18,7 +18,7 @@
     div[class^="col-"] {
         border: 1px solid green;
     } */
-    
+
     #color-adj {
         background-color: #ecf9ec;
     }
@@ -29,14 +29,18 @@
     <div class="container mt-2">
         <div class="row mb-5">
             <div class="col-12 col-sm-8 mx-auto text-right">
-                <a href="http://localhost:3000/articles/write">
-                    <small>Write</small></a>
-                <a href="http://localhost:3000/articles/read">
-                    <small>Read</small></a>
-                <a href="http://localhost:3000/login">
-                    <small>Login</small></a>
-                <a href="http://localhost:3000/registration">
-                    <small>Register</small></a>
+                <a href="/articles/write">
+                    <small>Write</small>
+                </a>
+                <a href="/articles/read">
+                    <small>Read</small>
+                </a>
+                <a href="/login">
+                    <small>Login</small>
+                </a>
+                <a href="/registration">
+                    <small>Register</small>
+                </a>
             </div>
         </div>
 
@@ -44,7 +48,9 @@
             <div class="col-12 col-sm-8 mx-auto text-left">
 
                 <h2>Login</h2>
-                <p><small>Please fill in this form to login.</small></p>
+                <p>
+                    <small>Please fill in this form to login.</small>
+                </p>
 
             </div>
             <div class="col-12 col-sm-8 mx-auto bg-light border rounded">
@@ -82,19 +88,18 @@
             <!-- ////////////////////////////////////////////////// Footer -->
             <div class="col-12 col-sm-8 mx-auto mt-2 text-right">
                 <small>Don't have an account?
-                    <a href="http://localhost:3000/registration">Register</a>.
+                    <a href="/registration">Register</a>.
                 </small>
             </div>
 
             <div class="col-12 col-sm-8 mx-auto mt-2 text-right">
-                <a href="http://localhost:3000/registration">
+                <a href="/registration">
                     <p id="login-error"></p>
                 </a>
             </div>
         </div>
     </div>
 </body>
-
 
 <script>
 
@@ -109,32 +114,29 @@
             errorDiv.classList.remove("d-block");
             return false;
         }
-    }
-
+    };
 
     function collectRegistrationData() {
         var username = document.getElementById("username-input").value;
         var password = document.getElementById("password-input").value;
 
-        var emptyField = false;
-        emptyField = isEmpty(username, "username") |
-            isEmpty(password, "password");
-
-        if (emptyField) return;
-        // Same as 'if(emptyField === true) return;'
+        if (isEmpty(username, "username") | isEmpty(password, "password")) {
+            return;
+        }
 
         var obj = {
             "username": username,
             "password": password,
         };
-        post(obj);
-    }
 
+        post(obj);
+    };
 
     function post(data) {
         axios.post("/login", data)
             .then(function (response) {
                 console.log(response.status)
+
                 if (response.status === 200) {
                     console.log(response.data)
 
@@ -151,7 +153,6 @@
                 console.log(error);
             });
     };
-
 
 </script>
 

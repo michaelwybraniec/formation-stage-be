@@ -4,10 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var passport = require('passport');
+var session = require('express-session');
+var LocalStrategy = require('passport-local');
+
 var indexRouter = require('./routes/indexRouter');
 var articlesRouter = require('./routes/articlesRouter');
+var usersRouter = require('./routes/usersRouter');
 
-var app = express(); 
+var Database = require('./db/Database.js');
+
+var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,6 +26,45 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ======== PASSPORT (AUTHENTICATION) SETUP ========
+app.use(session({
+  secret: "some-secret",
+  resave: true,
+  saveUninitialized: true,
+  secure: false
+})); // Note: we can plug Redis on this line for multi-server session handling
+app.use(passport.initialize());
+app.use(passport.session({
+  secret: "some-secret",
+  resave: true,
+  saveUninitialized: true,
+  secure: false
+}));
+
+passport.use(new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password'
+  },
+  function (username, password, done) {
+    // Try to find a user with provided name 
+    var user = Database.getUser(username);
+
+    // Check is passwords match
+    if (password === user.password) return done(null, user);
+    else return done(null, false);
+  }
+));
+
+passport.serializeUser(function (user, done) {
+  done(null, user.username);
+});
+
+passport.deserializeUser(function (username, done) {
+  // Try to find a user with provided name 
+  var user = Database.getUser(username);
+  return done(null, user);
+});
+
 // ================================================================
 //                         <IMPORTANT>
 // ================================================================
@@ -26,7 +72,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 // "http://localhost:3000" + ...
 
 app.use('/', indexRouter);        // "http://localhost:3000/"
-app.use('/articles', articlesRouter);
+
+// Secure routes above with passport : user will need to be authenticated to access them
+app.use(function (req, res, next) {
+  if (req.session.passport == null || !req.isAuthenticated()) res.sendStatus(403);
+  else next();
+});
+
+app.use('/articles', articlesRouter); 
+app.use('/user', usersRouter);
 
 
 // ================================================================
@@ -34,12 +88,12 @@ app.use('/articles', articlesRouter);
 // ================================================================
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

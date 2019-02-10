@@ -11,12 +11,13 @@
 </head>
 
 <style>
-    .row{
+    /* .row {
         border: 1px solid red;
     }
-    div[class^="col-"]{
+
+    div[class^="col-"] {
         border: 1px solid green;
-    }
+    } */
 </style>
 
 <body>
@@ -24,53 +25,55 @@
     <div class="container mt-2">
 
         <div class="row mb-5">
-            <div class="col-12 col-md-9 mx-auto text-right">
-                <a href="http://localhost:3000/articles/write">
-                    <small>Write</small></a>
-                <a href="http://localhost:3000/articles/read">
-                    <small>Read</small></a>
-                <a href="http://localhost:3000/login">
-                    <small>Login</small></a>
-                <a href="http://localhost:3000/registration">
+            <div class="col-12 col-sm-8 mx-auto text-right">
+                <a href="/articles/write">
+                    <small>Write</small>
+                </a>
+                <a href="/articles/read">
+                    <small>Read</small>
+                </a>
+                <a href="/login">
+                    <small>Login</small>
+                </a>
+                <a href="/registration">
                     <small>Register</small>
                 </a>
             </div>
         </div>
 
-
         <div class="row">
 
-            <div class="col-12 col-md-9 mx-auto text-center">
+            <div class="col-12 col-sm-8 mx-auto text-center">
                 <h2>Register</h2>
                 <p>
                     <small>Please fill in this form to create an account.</small>
                 </p>
             </div>
 
-            <div class="col-12 col-md-9 mx-auto bg-light border rounded">
+            <div class="col-12 col-sm-8 mx-auto bg-light border rounded">
                 <!-- ////////////////////////////////////////////// Username -->
                 <div class="form-group row mt-3">
                     <label for="username-input" class="col-12 col-sm-4 col-form-label">Username:</label>
                     <div class="col-12 col-sm-8">
-                        <input class="form-control" type="text" id="username-input" placeholder="username">
+                        <input class="form-control" type="text" id="username-input" placeholder="username" value="mike">
                         <div id="username-invalid-feedback" class="text-danger d-none">
                             <small>Please choose a username.</small>
                         </div>
                         <!-- ////////////////////////////////////// Login error duplicated -->
                         <div class="col-12 col-sm-12">
-                            <small class="text-success" id="login-duplicate-found-error"></small>
+                            <small class="text-warning" id="login-duplicate-found-error">
+
+                            </small>
                         </div>
                     </div>
                 </div>
-
-
 
                 <!-- ////////////////////////////////////////////// Email -->
                 <div class="form-group row">
 
                     <label for="email-input" class="col-12 col-sm-4 col-form-label">Email:</label>
                     <div class="col-12 col-sm-8">
-                        <input class="form-control" type="email" id="email-input" placeholder="name@example.com">
+                        <input class="form-control" type="email" id="email-input" placeholder="name@example.com" value="michael@mail.com">
                         <div id="email-invalid-feedback" class="text-danger d-none">
                             <small>Please provide an email.</small>
                         </div>
@@ -81,7 +84,7 @@
                 <div class="form-group row">
                     <label for="password-input" class="col-12 col-sm-4 col-form-label">Password:</label>
                     <div class="col-12 col-sm-8">
-                        <input class="form-control" type="password" id="password-input" placeholder="••••••••">
+                        <input class="form-control" type="password" id="password-input" value="pass">
                         <div id="password-invalid-feedback" class="text-danger d-none">
                             <small>Please choose a password (8-20 characters long).</small>
                         </div>
@@ -93,14 +96,16 @@
                     <label for="password-confirm-input" class="col-12 col-sm-4 col-form-label">Confirm password:
                     </label>
                     <div class="col-12 col-sm-8">
-                        <input  class="form-control" type="password" id="password-confirm-input" placeholder="••••••••">
+                        <input class="form-control" type="password" id="password-confirm-input" value="pass">
                         <div id="password-confirm-invalid-feedback" class="text-danger d-none">
                             <small>Please confirm the password.</small>
                         </div>
-                        <!-- ////////////////////////////////////// Pass are not identical -->
-                        <div class="col-12 col-sm-12">
-                            <small class="text-warning" id="pass-not-identical-error"></small>
+
+                        <!-- ////////////////////////////////////// Pass are not identical -->                    
+                        <div class="text-danger">
+                            <small id="pass-not-identical-error"></small>
                         </div>
+
                     </div>
                 </div>
 
@@ -108,7 +113,7 @@
                 <div class="form-group row">
                     <label for="dateofbirth-input" class="col-12 col-sm-4 col-form-label">Date of birth:</label>
                     <div class="col-12 col-sm-8">
-                        <input class="form-control" type="date" id="dateofbirth-input" placeholder="19/08/1995">
+                        <input class="form-control" type="date" id="dateofbirth-input" placeholder="19/08/1995" value="2018-07-22">
                         <div id="dateofbirth-invalid-feedback" class="text-danger d-none">
                             <small>Please provide a date of birth.</small>
                         </div>
@@ -117,7 +122,7 @@
 
                 <!-- ////////////////////////////////////////////// Bonus option! -->
                 <div class="form-group row">
-                    <label for="color-input" class="col-12 col-sm-4 col-form-label">Color:</label>
+                    <label for="color-input" class="col-12 col-sm-4 col-form-label" value="#F2F2F2">Color:</label>
                     <div class="col-12 col-sm-8">
                         <input class="form-control" type="color" id="color-input">
 
@@ -125,30 +130,31 @@
 
                         <h6 class="text-right">
                             <small>By creating an account you agree to our
-                                <a href="#">Terms & Privacy.</a></small>
+                                <a href="#">Terms & Privacy.</a>
+                            </small>
                         </h6>
                     </div>
                 </div>
 
-                <div class="form-group row text-center">
+                <div class="form-group row">
 
-                    <!-- ////////////////////////////////////////////// Submit confirmation -->
-                    <div class="col-12 col-sm-8 text-center">
-                        <small class="text-success" id="registration-confirmation"></small>
+                    <!-- ////////////////////////////////////////// Submit confirmation -->
+                    <!-- <div class="col-12 col-sm-8 text-center">
                     </div>
-
-                    <!-- ////////////////////////////////////////////// Submit button -->
-                    <div class="col-12 col-sm-4">
-                        <button type="submit" onclick="collectRegistrationData()" class="btn btn-success btn-md btn-block">Submit</button>
+                     -->
+                    <!-- ////////////////////////////////////////// Submit button -->
+                    <div class="col-6 col-sm-4 mx-auto">
+                        <button type="submit" onclick="collectSendRegistration()" class="btn btn-success btn-md btn-block">Submit</button>
+                        <small class="text-success text-center" id="registration-confirmation"></small>
                     </div>
 
                 </div>
             </div>
 
-            <div class="col-12 col-md-9 mx-auto mt-2 text-right">
+            <div class="col-12 col-sm-8 mx-auto mt-2 text-right">
                 <p>
                     <small>Already have an account?
-                        <a href="http://localhost:3000/login">Sign in</a>.</small>
+                        <a href="/login">Sign in</a>.</small>
                 </p>
             </div>
 
@@ -158,15 +164,6 @@
 </body>
 
 <script>
-
-
-
-
-
-    // document.getElementById("pass-not-identical-error").innerHTML
-    //     = "<small class='text-warning'><b>Password does not match.</b><small>";
-
-
 
     function isEmpty(input, inputName) {
         var errorDiv = document.getElementById(inputName + "-invalid-feedback");
@@ -179,22 +176,21 @@
             errorDiv.classList.remove("d-block");
             return false;
         }
-    }
+    };
 
-    function  passwordsDifferent(password, passwordConfirm) { 
+    function passwordsDifferent(password, passwordConfirm) {
         var alertError = document.getElementById("pass-not-identical-error");
-        if(password === passwordConfirm) {
-            alertError.innerHTML = "";
+        if (password !== passwordConfirm) {
+            alertError.innerHTML = "Password does not match.";
             return true;
         }
         else {
-            alertError.innerHTML = "<b>Password does not match.</b>";
+            alertError.innerHTML = "";
             return false;
         }
-     };
+    };
 
-
-    function collectRegistrationData() {
+    function collectSendRegistration() {
         var username = document.getElementById("username-input").value;
         var email = document.getElementById("email-input").value;
         var password = document.getElementById("password-input").value;
@@ -202,73 +198,45 @@
         var dateofbirth = document.getElementById("dateofbirth-input").value;
         var color = document.getElementById("color-input").value;
 
-        if( password !== passwordConfirm) 
-
-
-
-        var hasError = false;
-        hasError = isEmpty(username, "username") |
+        if(isEmpty(username, "username") |
             isEmpty(email, "email") |
             isEmpty(password, "password") |
             isEmpty(passwordConfirm, "password-confirm") |
             isEmpty(dateofbirth, "dateofbirth") |
-            passwordsDifferent(password, passwordConfirm);
-
-
-
-
-        // Same as 'if(emptyField === true) return;'
-
-        if (hasError) return;
-
-
+            passwordsDifferent(password, passwordConfirm)){
+                console.log("Prevent registration - inputs error happened");
+                return;
+            }
 
         var obj = {
             "username": username,
             "email": email,
             "password": password,
-            "dateofbirt": dateofbirth,
+            "dateofbirth": dateofbirth,
             "color": color
         };
 
         post(obj);
-    }
-
-
-    // function get() {
-    //     var url = document.getElementById("get-input").value;
-    //     axios.get(url)
-    //         .then(function (response) {
-    //             document.getElementById("get-result").
-    //             innerHTML = JSON.stringify(response.data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // };
-
+    };
 
     function post(data) {
         axios.post("/registration", data)
             .then(function (response) {
                 if (response.status === 200) {
                     document.getElementById("registration-confirmation").
-                        innerHTML = "<b>Submitted successfully!</b>";
+                        innerHTML = "Submitted successfully!";
 
                     setTimeout(function () {
                         window.location = "/login";
                     }, 1000);
                 }
             })
-
             .catch(function (error) {
                 document.getElementById("login-duplicate-found-error").innerHTML
-                    = "<small class='text-warning'><b>This username already exists.</b><small>";
+                    = "This username already exists.";
                 console.log(error);
             });
     };
-
-
 
 </script>
 
