@@ -29,13 +29,7 @@
     <div class="container mt-2">
         <div class="row mb-5">
             <div class="col-12 col-sm-8 mx-auto text-right">
-                <a href="/articles/write">
-                    <small>Write</small>
-                </a>
-                <a href="/articles/read">
-                    <small>Read</small>
-                </a>
-                <a href="/login">
+                <a href="/">
                     <small>Login</small>
                 </a>
                 <a href="/registration">
@@ -143,7 +137,7 @@
                     document.getElementById("login-error").innerHTML
                         = "<small class='text-success'><b>Sweet!</b><small>";
                     setTimeout(function () {
-                        window.location = "/articles/write";
+                        window.location = "/articles";
                     }, 1000);
                 }
             })

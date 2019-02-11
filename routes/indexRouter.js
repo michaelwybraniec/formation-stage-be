@@ -5,13 +5,13 @@ var passport = require('passport');
 
 /** ======================== PAGES ============================ */
 
-router.get('/registration', function (req, res, next) {
-  if(req.user) res.render('write');
-  else res.render("registration");
+router.get('/', function (req, res, next) {
+  res.render("login"); 
 });
 
-router.get('/login', function (req, res, next) {
-  res.render("login"); 
+router.get('/registration', function (req, res, next) {
+  if(req.user) res.redirect('/articles');
+  else res.render("registration");
 });
 
 /** ======================== DATA ============================ */
@@ -49,5 +49,9 @@ router.post('/login', function (req, res, next) {
     });
   })(req, res, next);
 });
+
+
+
+
 
 module.exports = router;

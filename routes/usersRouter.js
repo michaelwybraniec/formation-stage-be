@@ -14,8 +14,8 @@ router.get('/color', function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    res.send(req.user);
-  });
+  res.send(req.user);
+});
 
 
 module.exports = router;

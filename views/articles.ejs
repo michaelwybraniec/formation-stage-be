@@ -18,9 +18,9 @@
         border: 1px solid green;
     } */
 
-    #color-adj {
+    /* #color-adj {
         background-color: #F2F2F2;
-    }
+    } */
 
     .circle {
         height: 10px;
@@ -32,62 +32,56 @@
 </style>
 
 <body>
-    <div class="container mt-2">
+    <div class="container mt-3">
 
-        <div class="row mb-5">
+        <div class="row">
+
             <div class="col-12 col-sm-8 mx-auto text-right">
 
-                    <div class='circle' style='background-color:"color"'></div> 
-                <small id="welcome-name" class="text-left"></small>
+                <div class="col-12">
+                    <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
+                    "
+                        class="img-circle" alt="Cinque Terre" width="30" height="30" alt="...">
+                </div>
 
-                <a href="/articles/write">
-                    <small>/ Write</small>
-                </a>
-                <a href="/articles/read">
-                    <small>Read</small>
-                </a>
+                <div class="col-12">
+
+                    <!-- //////////////////////////////////////////// Welcome bar -->
+                    <div class='circle' style='background-color:"color"'></div>
+
+                    <small>Bonjour </small><small id="welcome-name" class="text-left"></small><small> !    </small>
+                </div>
+
             </div>
-
-
         </div>
 
         <div class="row mb-1">
 
-            <!-- <div class="col-12 col-sm-8 mx-auto "> -->
             <div class="col-12 col-sm-8 mx-auto">
 
                 <div class="row">
 
-                    <div class="col-12 col-md-6 mt-2 mb-2 text-left">
-                        <h2>Your posts:</h2>
-                        <small>Have an idea? - write a
-                            <a href="/articles/write">new post.</a>
-                        </small>
-                    </div>
 
-                    <div id="color-adj" class="col-12 col-md-6 mt-2 mb-2 border rounded mx-auto">
-                        <div class="row mb-1 mt-1">
-                            <div class="col-12 mx-auto">
-                                <!-- ////////////////////////////////////////// Quick post  -->
-                                <input type="text" id="post-title-input" class="form-control text-center" placeholder="Quickpost (title)">
-                                <input type="text" id="post-content-input" rows="6" class="form-control text-center" placeholder="Quickpost (message)"></input>
-                                <button onclick="post()" class="btn btn-dark btn-sm btn-block">Post</button>
-                            </div>
-                        </div>
+                    <div id="color-adj" class="col-12 mt-2 mb-2 p-2 rounded mx-auto">
+                 
+                        <input type="text" id="post-content-input" rows="6" class="form-control text-center"
+                            placeholder="message..."></input>
+                        <button onclick="postArticle()" class="btn btn-dark btn-sm btn-block">Post</button>
+                   
                     </div>
                 </div>
             </div>
 
-            <div id="color-adj" class="col-12 col-sm-8 mx-auto border rounded">
+            <div id="color-adj" class="col-12 col-sm-8 mx-auto">
                 <div class="row">
 
-                    <div class="col-6 mt-2 mb-2 bg-white text-dark border rounded">
+                    <div class="col-6 mt-2 mb-2 bg-white">
 
                         <!-- ////////////////////////////////////////// Individual articles -->
                         <p class="font-weight-light" id="get-content-result-individual"></p>
                     </div>
 
-                    <div class="col-6 mt-2 mb-2 bg-white text-dark border rounded">
+                    <div class="col-6 mt-2 mb-2 bg-white">
 
                         <!-- ////////////////////////////////////////// All articles -->
                         <p class="font-weight-normal" id="get-content-result-all"></p>
@@ -114,6 +108,8 @@
     getColor();
 
 
+
+
     function getUserNameForTheTitle() {
         axios.get('/user')
             .then(function (response) {
@@ -124,6 +120,9 @@
             });
     };
     getUserNameForTheTitle();
+
+
+
 
     function getUserNameForTheContent() {
         axios.get('/user')
@@ -139,14 +138,17 @@
     };
     getUserNameForTheContent();
 
+
+
+
     function getAllArticles() {
-        axios.get("/articles/")
+        axios.get("/articles/all")
             .then(function (response) {
+                console.log("Get all articles")
                 console.log(response.data)
                 document.getElementById("get-content-result-all").innerHTML = "";
 
                 for (var i = response.data.length - 1; i >= 0; i--) {
-                    // for (var i = 0; i < response.data.length; i++) {
                     console.log(response.data[i].title);
                     console.log(response.data[i].content);
 
@@ -154,7 +156,8 @@
                     var title = response.data[i].title;
                     var content = response.data[i].content;
                     var color = response.data[i].color;
-                    var result = "<small>" + date + "<br><div class='circle' style='background-color:" + color + "'></div><b>" + title + "</b><br>" + content + "</small><hr>";
+                    var user = response.data[i].ownerName;
+                    var result = "<small><small>" + date + "</small><br><div class='circle' style='background-color:" + color + "'></div><small><b>" + user + "</b>: </small>" + content + "</small><hr>";
 
                     console.log(result);
                     document.getElementById("get-content-result-all").innerHTML += result;
@@ -163,28 +166,31 @@
             .catch(function (error) {
                 console.log(error);
             });
-    };
-
+    }; 
     getAllArticles();
+
+
+
 
     function getUserArticles() {
         axios.get('/articles/user')
             .then(function (response) {
+                console.log("Get User articles")
                 console.log(response.data);
                 if (!response.data) return;
 
                 document.getElementById("get-content-result-individual").innerHTML = "";
 
                 for (var i = response.data.length - 1; i >= 0; i--) {
-                    // for (var i = 0; i < response.data.length; i++) {
                     console.log(response.data[i].title);
                     console.log(response.data[i].content);
 
                     var date = new Date(response.data[i].datePosted).toLocaleString();
-                    var title = response.data[i].title;
+                    // var title = response.data[i].title;
                     var content = response.data[i].content;
                     var color = response.data[i].color;
-                    var result = "<small>" + date + "<br><div class='circle' style='background-color:" + color + "'></div><b>" + title + "</b><br>" + content + "</small><hr>";
+                    var user = response.data[i].ownerName;
+                    var result = "<small><small>" + date + "</small><br><div class='circle' style='background-color:" + color + "'></div><small><b>" + user + "</b>: </small>" + content + "</small><hr>";
 
                     console.log(result);
                     document.getElementById("get-content-result-individual").innerHTML += result;
@@ -197,13 +203,13 @@
     getUserArticles();
 
 
-    function post() {
-        var title = document.getElementById("post-title-input").value;
+
+
+    function postArticle() {
         var content = document.getElementById("post-content-input").value;
 
         var data = {
             "datePosted": Date.now(),
-            "title": title,
             "content": content,
         };
 
