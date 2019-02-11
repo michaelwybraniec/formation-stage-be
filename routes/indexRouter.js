@@ -9,6 +9,10 @@ router.get('/', function (req, res, next) {
   res.render("login"); 
 });
 
+router.get('/', function (req, res, next) {
+  res.render("login"); 
+});
+
 router.get('/registration', function (req, res, next) {
   if(req.user) res.redirect('/articles');
   else res.render("registration");

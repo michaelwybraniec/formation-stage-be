@@ -1,0 +1,143 @@
+<script>
+
+    var DB = {
+        // =============== DATA ================
+
+        users: [],
+        libraries: [],
+        books: [],
+
+        // ============= FUNCTIONS =============
+
+        addUser: function(userName, age){
+            // TODO : create a user object with the userName & age
+            // TODO : add a unique id to the user object
+            // TODO : add the user object to the DB
+        },
+
+        addLibrary: function(libraryName, city){
+            // TODO : create a library object with the libraryName & city
+            // TODO : add a unique id to the library object
+            // TODO : add the library object to the DB
+        },
+
+        addBook: function(libraryId, bookName){
+            // TODO : create a book object with the libraryId, bookName
+            // TODO : add a unique id to the book object
+            // TODO : add the book object to the DB  
+        },
+
+        countUsers: function(){
+            // TODO : return the total number of users
+        },
+
+        countLibraries: function(){
+            // TODO : return the total number of libraries
+        },
+
+        countBooks: function(){
+            // TODO : return the total number of books
+        },
+
+        countLibraryBooks: function(libraryId){
+            // TODO : return the number of books targeted library posesses
+        },
+
+        getUserByUserName: function(userName){
+            // TODO : return a user provided his userName
+        },
+
+        getLibraryByName: function(libraryName){
+            // TODO : return a library provided its libraryName
+        },
+
+        getBookByTitle: function(title){
+            // TODO : return a book provided its title
+        },
+
+    };
+
+    // Add users
+    DB.addUser("Michael", 30);
+    DB.addUser("Gael", 25);
+    DB.addUser("Ian", 18);
+    DB.addUser("Romane", 20);
+    DB.addUser("Thierry", 50);
+
+    // Add libraries
+    DB.addLibrary("Librairie Delille", "Clermont-Ferrand");
+    DB.addLibrary("Librairie de la cathédrale", "Reims");
+
+    // Add books
+    DB.addBook(1, "Lord of the Rings");
+    DB.addBook(1, "Harry Potter");
+    DB.addBook(1, "Narnia");
+    DB.addBook(2, "Willy Wonka");
+    DB.addBook(2, "King Kong");
+    DB.addBook(2, "Da Vinci Code");
+    DB.addBook(2, "Millenium");
+
+    // Count users total
+    DB.countUsers();
+
+    // Count libraries total
+    DB.countLibraries();
+
+    // Count books total
+    DB.countBooks();
+
+    // Counts books of given library
+    DB.countLibraryBooks(1);
+    DB.countLibraryBooks(2);
+
+    // Get user by userName
+    DB.getUserByUserName("Michael");
+
+    // Get library by libraryName
+    DB.getLibraryByName("Librairie de la cathédrale");
+
+    // Get book by title 
+    DB.getBookByTitle("King Kong");
+
+    // =====================================================
+    // ======================= STEP 2 ======================
+    // =====================================================
+
+    // A user can now borrow a book. When he does so, we will note in the book object 
+    // a new field, 'borrowerId', which will be the user's id
+
+    // TODO : Create a function that enables to borrow a book (following instructions above)
+    // DB.borrowBook("Michael", "Lord of the Rings");
+    // DB.borrowBook("Romane", "Da Vinci Code");
+    // DB.borrowBook("Thierry", "Harry Potter");
+    // DB.borrowBook("Thierry", "Willy Wonka");
+
+    // Now, we want to add a safety to that function so that a book cannot be borrowed by 2 people at the same time
+    // TODO : Improve the 'borrowBook' method so that it does not allow to borrow a book twice at the same time
+    // DB.borrowBook("Gael", "Harry Potter"); // Should do nothing, because Thierry already has borrowed that book
+
+    // TODO : Create a function that returns how much borrowed books a given library has
+    // DB.countBorrowedBooks("Librairie Delille");
+
+    // TODO : Create a function that returns how much unborrowed books a given library has
+    // DB.countUnborrowedBooks("Librairie Delille");
+
+    // TODO : Create a function that will return all the users that have borrowed books in a given library
+    // DB.borrowers("Librairie Delille");
+
+    // TODO : Create a function that will return the number of users that have borrowed books in a given library
+    // DB.countBorrowers("Librairie Delille");
+
+    // TODO : Create a function that will return (for a give library) the names of the users who have borrowed books, 
+    // and how much books they have borrowed (ex: {userName: "Ian", books: 3})
+    // DB.listBorrowers("Librairie Delille");
+
+    // When a user quits the library network, we have to free the books he might have borrowed
+    // TODO : Create a function that will enable to remove a user from the database and free all the books he had borrowed
+    // DB.removeUser("Thierry");
+
+    // When a library closes, all its books are removed from the database as they will no longer be available
+    // TODO : Create a function that will enable to remove a library and all its books
+    // DB.removeLibrary("Librairie Delille");
+
+</script>
