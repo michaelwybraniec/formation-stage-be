@@ -9,53 +9,212 @@
 
         // ============= FUNCTIONS =============
 
-        addUser: function(userName, age){
-            // TODO : create a user object with the userName & age
-            // TODO : add a unique id to the user object
-            // TODO : add the user object to the DB
+        addUser: function (userName, age) {
+            var user = {
+                "id": this.users.length + 1,
+                "userName": userName,
+                "age": age
+            };
+            this.users.push(user);
         },
 
-        addLibrary: function(libraryName, city){
-            // TODO : create a library object with the libraryName & city
-            // TODO : add a unique id to the library object
-            // TODO : add the library object to the DB
+        addLibrary: function (libraryName, city) {
+            var library = {
+                "id": this.libraries.length + 1,
+                "libraryName": libraryName,
+                "city": city
+            };
+            this.libraries.push(library);
         },
 
-        addBook: function(libraryId, bookName){
-            // TODO : create a book object with the libraryId, bookName
-            // TODO : add a unique id to the book object
-            // TODO : add the book object to the DB  
+        addBook: function (libraryId, bookName) {
+            var book = {
+                "id": this.books.length + 1,
+                "libraryId": libraryId,
+                "bookName": bookName
+            };
+            this.books.push(book);
         },
 
-        countUsers: function(){
-            // TODO : return the total number of users
+        countUsers: function () {
+            return DB.users.length;
         },
 
-        countLibraries: function(){
-            // TODO : return the total number of libraries
+        countLibraries: function () {
+            return DB.libraries.length;
         },
 
-        countBooks: function(){
-            // TODO : return the total number of books
+        countBooks: function () {
+            return DB.books.length;
         },
 
-        countLibraryBooks: function(libraryId){
-            // TODO : return the number of books targeted library posesses
+        countLibraryBooks: function (libraryId) {
+            var result = 0;
+            for (var i = 0; i < this.books.length; i++) {
+                var books = this.books[i];
+                if (books.libraryId === libraryId) {
+                    result++;
+                }
+            }
+            return result;
         },
 
-        getUserByUserName: function(userName){
-            // TODO : return a user provided his userName
+        getBooksByLibraryId: function (libraryId) {
+            var result = [];
+            for (var i = 0; i < this.books.length; i++) {
+                var book = this.books[i];
+                if (book.libraryId === libraryId) {
+                    result.push(book);
+                }
+            }
+            return result;
         },
 
-        getLibraryByName: function(libraryName){
-            // TODO : return a library provided its libraryName
+        getUserByUserName: function (userName) {
+            for (var i = 0; i < DB.users.length; i++) {
+                var user = DB.users[i];
+                if (user.userName === userName) {
+                    return user;
+                }
+            }
         },
 
-        getBookByTitle: function(title){
-            // TODO : return a book provided its title
+        getLibraryByName: function (libraryName) {
+            for (var i = 0; i < DB.libraries.length; i++) {
+                var library = DB.libraries[i];
+                if (library.libraryName === libraryName) {
+                    return library;
+                }
+            }
         },
+
+        getBookByBookName: function (bookName) {
+            for (var i = 0; i < DB.books.length; i++) {
+                var book = DB.books[i];
+                if (book.bookName === bookName) {
+                    return book;
+                }
+            }
+        },
+
+        borrowBook: function (userName, bookName) {
+            var book = this.getBookByBookName(bookName);
+
+            if (book.borrowerId === undefined) {
+                var user = this.getUserByUserName(userName);
+                book.borrowerId = user.id;
+            }
+
+            return book;
+        },
+
+
+        getBorrowedBooks: function (libraryName) {
+            var library = this.getLibraryByName(libraryName);
+            var books = this.getBooksByLibraryId(library.id);
+            var borrowedBooks = [];
+
+            for (var i = 0; i < books.length; i++) {
+                if (books[i].borrowerId !== undefined) {
+                    borrowedBooks.push(books[i]);
+                }
+            }
+
+            return borrowedBooks;
+        },
+
+        countBorrowedBooks: function (libraryName) {
+            return this.getBorrowedBooks(libraryName).length;
+        },
+
+
+
+        getUnborrowedBooks: function (libraryName) {
+            var library = this.getLibraryByName(libraryName);
+            var books = this.getBooksByLibraryId(library.id);
+            var unBorrowedBooks = [];
+
+            for (var i = 0; i < books.length; i++) {
+                if (books[i].borrowerId === undefined) {
+                    unBorrowedBooks.push(books[i]);
+                }
+            }
+            return unBorrowedBooks;
+        },
+
+        countUnborrowedBooks: function (libraryName) {
+            return this.getUnborrowedBooks(libraryName).length;
+        },
+
+
+        getBorrowers: function (libraryName) {
+            var books = this.getBorrowedBooks(libraryName);
+            var borrowers = [];
+
+            // First, loop through the users
+            for (var i = 0; i < DB.users.length; i++) {
+                var user = DB.users[i];
+
+                // For each user, check if he has borrowed a book
+                for (var j = 0; j < books.length; j++) {
+                    var book = books[j];
+
+                    if (user.id === book.borrowerId) {
+                        borrowers.push(user);
+                        break; // Will stop the last for loop
+                    }
+                }
+            }
+
+            return borrowers;
+        },
+
+        // TODO : Create a function that will return the number of users that have borrowed books in a given library
+        // DB.countBorrowers("Librairie Delille");
+
+        countBorrowers: function (libraryName) {
+            return this.getBorrowers(libraryName).length;
+        },
+
+
+
+
+        // TODO : Create a function that will return (for a give library) the names of the users who have borrowed books, 
+        // and how much books they have borrowed (ex: {userName: "Ian", books: 3})
+        // DB.listBorrowers("Librairie Delille");
+        listBorrowers: function (libraryName) {
+            var users = this.getBorrowers(libraryName);
+            var books = this.getBorrowedBooks(libraryName);
+            var borrowers = [];
+
+            // First, loop through the users
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+                var result = {
+                    userName: user.userName,
+                    books: 0
+                };
+
+                // For each user, check if he has borrowed a book
+                for (var j = 0; j < books.length; j++) {
+                    var book = books[j];
+
+                    if (user.id === book.borrowerId) {
+                        result.books++;
+                    }
+                }
+
+                borrowers.push(result);
+            }
+
+            return borrowers;
+        },
+
+
+
 
     };
+
 
     // Add users
     DB.addUser("Michael", 30);
@@ -63,10 +222,23 @@
     DB.addUser("Ian", 18);
     DB.addUser("Romane", 20);
     DB.addUser("Thierry", 50);
+    DB.addUser("Lydie", 48);
+    DB.addUser("Arnaud", 21);
+    DB.addUser("Chung", 23);
+    DB.addUser("Adolf", 12);
+    DB.addUser("Alix", 23);
+    DB.addUser("Tom", 2);
+    DB.addUser("Jack", 2);
+    DB.addUser("Peter", 30);
+
 
     // Add libraries
     DB.addLibrary("Librairie Delille", "Clermont-Ferrand");
     DB.addLibrary("Librairie de la cathédrale", "Reims");
+    DB.addLibrary("Librairie Centreville", "Lyon");
+    DB.addLibrary("Librairie la Tour Eiffel", "Paris");
+    DB.addLibrary("Librairie la Grand Ferrand", "Cebazat");
+
 
     // Add books
     DB.addBook(1, "Lord of the Rings");
@@ -75,7 +247,18 @@
     DB.addBook(2, "Willy Wonka");
     DB.addBook(2, "King Kong");
     DB.addBook(2, "Da Vinci Code");
-    DB.addBook(2, "Millenium");
+    DB.addBook(3, "JS code part.1");
+    DB.addBook(4, "JS code part.2");
+    DB.addBook(3, "Delf B1 francais");
+    DB.addBook(4, "Delf A2 francais");
+    DB.addBook(5, "How to insult your boss properly");
+    DB.addBook(5, "Street Fighter - how to spam like a fucktard");
+    DB.addBook(4, "Node.js 2019");
+    DB.addBook(2, "How I got my first 5mld USD");
+    DB.addBook(2, "Bible v.9");
+    DB.addBook(1, "Le tour a Reims avec Gael and Alix");
+    DB.addBook(5, "Millenium");
+    DB.addBook(2, "Millenium 2");
 
     // Count users total
     DB.countUsers();
@@ -97,40 +280,71 @@
     DB.getLibraryByName("Librairie de la cathédrale");
 
     // Get book by title 
-    DB.getBookByTitle("King Kong");
+    DB.getBookByBookName("King Kong");
+
+    console.log(DB);
+    console.log(DB.users);
+    console.log(DB.libraries);
+    console.log(DB.books);
+    console.log("countUsers : " + DB.countUsers());
+    console.log("countLibraries : " + DB.countLibraries());
+    console.log("countBooks : " + DB.countBooks());
+    console.log("countLibraryBooks : " + DB.countLibraryBooks(1));
+    console.log("getUserByUserName : " + JSON.stringify(DB.getUserByUserName("Chung")));
+    console.log("getLibraryByName : " + JSON.stringify(DB.getLibraryByName("Librairie la Grand Ferrand")));
+    console.log("getBookByBookName : " + JSON.stringify(DB.getBookByBookName("Le tour a Reims avec Gael and Alix")));
 
     // =====================================================
     // ======================= STEP 2 ======================
     // =====================================================
+    console.log("");
+    console.log("");
 
-    // A user can now borrow a book. When he does so, we will note in the book object 
-    // a new field, 'borrowerId', which will be the user's id
+    console.log("borrowBook : " + JSON.stringify(DB.borrowBook("Romane", "Lord of the Rings")));
+    console.log("borrowBook : " + JSON.stringify(DB.borrowBook("Michael", "Lord of the Rings")));
+    console.log("borrowBook : " + JSON.stringify(DB.borrowBook("Romane", "Da Vinci Code")));
+    console.log("borrowBook : " + JSON.stringify(DB.borrowBook("Romane", "Le tour a Reims avec Gael and Alix")));
+    console.log("borrowBook : " + JSON.stringify(DB.borrowBook("Thierry", "Harry Potter")));
+    console.log("borrowBook : " + JSON.stringify(DB.borrowBook("Adolf", "Willy Wonka")));
 
-    // TODO : Create a function that enables to borrow a book (following instructions above)
-    // DB.borrowBook("Michael", "Lord of the Rings");
-    // DB.borrowBook("Romane", "Da Vinci Code");
-    // DB.borrowBook("Thierry", "Harry Potter");
-    // DB.borrowBook("Thierry", "Willy Wonka");
 
-    // Now, we want to add a safety to that function so that a book cannot be borrowed by 2 people at the same time
-    // TODO : Improve the 'borrowBook' method so that it does not allow to borrow a book twice at the same time
-    // DB.borrowBook("Gael", "Harry Potter"); // Should do nothing, because Thierry already has borrowed that book
+    console.log("countBorrowedBooks : " + (DB.countBorrowedBooks("Librairie Delille")));
+    console.log("getBorrowedBooks : " + JSON.stringify(DB.getBorrowedBooks("Librairie Delille")));
 
-    // TODO : Create a function that returns how much borrowed books a given library has
-    // DB.countBorrowedBooks("Librairie Delille");
+    console.log("countBorrowedBooks : " + (DB.countBorrowedBooks("Librairie la Tour Eiffel")));
+    console.log("getBorrowedBooks : " + JSON.stringify(DB.getBorrowedBooks("Librairie la Tour Eiffel")));
 
-    // TODO : Create a function that returns how much unborrowed books a given library has
-    // DB.countUnborrowedBooks("Librairie Delille");
+    console.log("countBorrowedBooks : " + (DB.countBorrowedBooks("Librairie de la cathédrale")));
+    console.log("getBorrowedBooks : " + JSON.stringify(DB.getBorrowedBooks("Librairie de la cathédrale")));
 
-    // TODO : Create a function that will return all the users that have borrowed books in a given library
-    // DB.borrowers("Librairie Delille");
+   
+    console.log("");
+    console.log("");
+    console.log("countUnborrowedBooks : " + (DB.countUnborrowedBooks("Librairie Delille")));
+    console.log("getUnborrowedBooks : " + JSON.stringify(DB.getUnborrowedBooks("Librairie Delille")));
 
-    // TODO : Create a function that will return the number of users that have borrowed books in a given library
-    // DB.countBorrowers("Librairie Delille");
+    console.log("countUnborrowedBooks : " + (DB.countUnborrowedBooks("Librairie la Tour Eiffel")));
+    console.log("getUnborrowedBooks : " + JSON.stringify(DB.getUnborrowedBooks("Librairie la Tour Eiffel")));
 
-    // TODO : Create a function that will return (for a give library) the names of the users who have borrowed books, 
-    // and how much books they have borrowed (ex: {userName: "Ian", books: 3})
-    // DB.listBorrowers("Librairie Delille");
+    console.log("countUnborrowedBooks : " + (DB.countUnborrowedBooks("Librairie de la cathédrale")));
+    console.log("getUnborrowedBooks : " + JSON.stringify(DB.getUnborrowedBooks("Librairie de la cathédrale")));
+
+
+    console.log("");
+   
+    console.log("countBorrowedBooks + countUnborrowedBooks : " + (DB.countBorrowedBooks("Librairie de la cathédrale") + DB.countUnborrowedBooks("Librairie de la cathédrale")));
+    console.log("countLibraryBooks : " + DB.countLibraryBooks(2));
+
+
+    console.log("getBorrowers");
+    console.log(DB.getBorrowers("Librairie Delille"));
+    console.log("countBorrowers : " + DB.countBorrowers("Librairie Delille"));
+
+
+    console.log("listBorrowers : " + JSON.stringify(DB.listBorrowers("Librairie Delille")));
+
+
+
 
     // When a user quits the library network, we have to free the books he might have borrowed
     // TODO : Create a function that will enable to remove a user from the database and free all the books he had borrowed
