@@ -128,7 +128,6 @@
         },
 
 
-
         getUnborrowedBooks: function (libraryName) {
             var library = this.getLibraryByName(libraryName);
             var books = this.getBooksByLibraryId(library.id);
@@ -165,23 +164,15 @@
                     }
                 }
             }
-
             return borrowers;
         },
 
-        // TODO : Create a function that will return the number of users that have borrowed books in a given library
-        // DB.countBorrowers("Librairie Delille");
 
         countBorrowers: function (libraryName) {
             return this.getBorrowers(libraryName).length;
         },
 
 
-
-
-        // TODO : Create a function that will return (for a give library) the names of the users who have borrowed books, 
-        // and how much books they have borrowed (ex: {userName: "Ian", books: 3})
-        // DB.listBorrowers("Librairie Delille");
         listBorrowers: function (libraryName) {
             var users = this.getBorrowers(libraryName);
             var books = this.getBorrowedBooks(libraryName);
@@ -203,17 +194,114 @@
                         result.books++;
                     }
                 }
-
                 borrowers.push(result);
             }
-
             return borrowers;
         },
 
 
 
+        getBooksByUserName: function (userName) {
+            var user = this.getUserByUserName(userName);
+            var booksToReturn = [];
+            for (var i = 0; i < this.books.length; i++) {
+                var book = this.books[i];
+                if (user.id === book.borrowerId) {
+                    booksToReturn.push(book);
+                }
+            }
+            return booksToReturn;
+        },
+
+        removeUser: function (userName) {
+            var userToRemove = this.getUserByUserName(userName);
+
+            for (var i = 0; i < this.users.length; i++) {
+                var user = this.users[i];
+                if (user.id === userToRemove.id) {
+                    this.users.splice(i, 1);
+                    return;
+                }
+            }
+        },
+
+        returnBooks: function (userName) {
+            var booksToReturn = this.getBooksByUserName(userName)
+            for (var i = 0; i < booksToReturn.length; i++) {
+                delete booksToReturn[i].borrowerId;
+            }
+        },
+
+
+        // When a user quits the library network, we have to free the books he might have borrowed
+        // TODO : Create a function that will enable to remove a user from the database and free all the books he had borrowed
+        // DB.removeUser("Thierry");
+        removeUserAndUnborrowBooks: function (userName) {
+            // var user = this.getUserByUserName(userName);
+            var booksToReturn = this.getBooksByUserName(userName)
+            if (booksToReturn.length !== 0) {
+                this.returnBooks(userName);
+            }
+            this.removeUser(userName);
+        },
+
+
+
+
+
+
+
+
+
+
+        removeLibrary: function (libraryName) {
+            var libraryToRemove = this.getLibraryByName(libraryName);
+
+            for (var i = 0; i < this.libraries.length; i++) {
+                var library = this.libraries[i];
+                if (library.id === libraryToRemove.id) {
+                    this.libraries.splice(i, 1);
+                    return;
+                }
+            }
+        },
+
+        removeBooks: function (libraryName) {
+            var library = this.getLibraryByName(libraryName);
+            var booksToRemove = this.getBooksByLibraryId(library.id);
+
+            for (var i = 0; i < this.books.length; i++) {
+                var book = this.books[i];
+                if (book.libraryId === library.id) {
+                    this.books.splice(i, 1);
+                    i--;
+                }                
+            }
+        },
+
+
+
+
+        // When a library closes, all its books are removed from the database as they will no longer be available
+        // TODO : Create a function that will enable to remove a library and all its books
+        // DB.removeLibrary("Librairie Delille");
+
+        removeLibraryAndAllBooks: function (libraryName) {
+            var library = this.getLibraryByName(libraryName);
+            // console.log("library before deleting variable" + library);
+            // console.log("library before deleting database" + this.libraries);            
+            var booksToRemove = this.getBooksByLibraryId(library.id);
+
+            this.removeBooks(libraryName);
+            this.removeLibrary(libraryName);
+
+
+        },
+
+
 
     };
+
 
 
     // Add users
@@ -317,7 +405,7 @@
     console.log("countBorrowedBooks : " + (DB.countBorrowedBooks("Librairie de la cathédrale")));
     console.log("getBorrowedBooks : " + JSON.stringify(DB.getBorrowedBooks("Librairie de la cathédrale")));
 
-   
+
     console.log("");
     console.log("");
     console.log("countUnborrowedBooks : " + (DB.countUnborrowedBooks("Librairie Delille")));
@@ -331,7 +419,7 @@
 
 
     console.log("");
-   
+
     console.log("countBorrowedBooks + countUnborrowedBooks : " + (DB.countBorrowedBooks("Librairie de la cathédrale") + DB.countUnborrowedBooks("Librairie de la cathédrale")));
     console.log("countLibraryBooks : " + DB.countLibraryBooks(2));
 
@@ -344,14 +432,30 @@
     console.log("listBorrowers : " + JSON.stringify(DB.listBorrowers("Librairie Delille")));
 
 
+    console.log("");
+    console.log("");
+    console.log("getBooksByUserName Thierry: " + DB.getBooksByUserName("Thierry"));
+    console.log("getBooksByUserName Thierry: " + JSON.stringify(DB.getBooksByUserName("Thierry")));
+    console.log("getBooksByUserName Romane: " + DB.getBooksByUserName("Romane"));
+    console.log("getBooksByUserName Romane: " + JSON.stringify(DB.getBooksByUserName("Romane")));
 
+    console.log("");
+    console.log("getBooksByUserName Romane: " + JSON.stringify(DB.getBooksByUserName("Romane")));
+    console.log("returnBook : " + JSON.stringify(DB.returnBooks("Romane")));
+    console.log("getBooksByUserName unborrowing books - Romane: " + JSON.stringify(DB.getBooksByUserName("Romane")));
 
-    // When a user quits the library network, we have to free the books he might have borrowed
-    // TODO : Create a function that will enable to remove a user from the database and free all the books he had borrowed
-    // DB.removeUser("Thierry");
+    console.log("");
+    console.log("getBooksByUserName Thierry: " + JSON.stringify(DB.getBooksByUserName("Thierry")));
+    console.log("removeUserAndUnborrowBooks Thierry: " + DB.removeUserAndUnborrowBooks("Thierry"));
+    console.log(DB.books);
+    console.log(DB.users);
 
-    // When a library closes, all its books are removed from the database as they will no longer be available
-    // TODO : Create a function that will enable to remove a library and all its books
-    // DB.removeLibrary("Librairie Delille");
+    console.log("");
+    console.log("");
+    console.log(DB.libraries);
+    console.log(DB.getBooksByLibraryId("Librairie Delille"));
+    console.log(DB.removeLibraryAndAllBooks("Librairie Delille"));
+    console.log(DB.libraries);
+    console.log(DB.books);
 
 </script>
