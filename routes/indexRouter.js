@@ -3,6 +3,8 @@ var router = express.Router();
 var Database = require('../db/Database.js');
 var passport = require('passport');
 
+var User = require("../models/User");
+
 /** ======================== PAGES ============================ */
 
 router.get('/', function (req, res, next) {
@@ -28,11 +30,17 @@ router.post('/registration', function (req, res, next) {
   var user = Database.getUser(req.body.username);
   if (user) res.sendStatus(500);
  
-  Database.addUser(req.body);
+  // Database.addUser(req.body);
 
-  console.log(Database.users);
+  new User(req.body).save(function (err) {
+      if (err){
+        console.log(err);
+        return res.sendStatus(500);
+      } 
 
-  res.sendStatus(200);
+      return res.sendStatus(200);
+    });
+
 });
 
 

@@ -214,22 +214,27 @@
     };
 
     function post(data) {
-        axios.post("/registration", data)
-            .then(function (response) {
-                if (response.status === 200) {
-                    document.getElementById("registration-confirmation").
-                        innerHTML = "Submitted successfully!";
 
-                    setTimeout(function () {
-                        window.location = "/";
-                    }, 1000);
-                }
-            })
-            .catch(function (error) {
-                document.getElementById("login-duplicate-found-error").innerHTML
-                    = "This username already exists.";
-                console.log(error);
-            });
+        var successCallback = function (response) {
+            if (response.status === 200) {
+                document.getElementById("registration-confirmation").
+                    innerHTML = "Submitted successfully!";
+
+                setTimeout(function () {
+                    window.location = "/";
+                }, 1000);
+            }
+        };
+
+        var errorCallback = function (error) {
+            document.getElementById("login-duplicate-found-error").innerHTML
+                = "This username already exists.";
+            console.log(error);
+        };
+
+        axios.post("/registration", data)
+            .then(successCallback)
+            .catch(errorCallback);
     };
 
 </script>

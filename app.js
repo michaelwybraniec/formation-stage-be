@@ -13,6 +13,7 @@ var articlesRouter = require('./routes/articlesRouter');
 var usersRouter = require('./routes/usersRouter');
 
 var Database = require('./db/Database.js');
+var mongoose = require('mongoose');
 
 var app = express();
 
@@ -64,6 +65,14 @@ passport.deserializeUser(function (username, done) {
   var user = Database.getUser(username);
   return done(null, user);
 });
+
+// Database 
+
+mongoose.connect('mongodb://localhost:27017/formation-be', function (err, db) {
+  if (err) throw 'Unable to connect to the server. Please start the server. Error:' + err;
+  else console.error('Connected to MongoDB successfully!');
+});
+
 
 // ================================================================
 //                         <IMPORTANT>
