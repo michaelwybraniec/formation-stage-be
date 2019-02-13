@@ -51,8 +51,8 @@
         countLibraryBooks: function (libraryId) {
             var result = 0;
             for (var i = 0; i < this.books.length; i++) {
-                var books = this.books[i];
-                if (books.libraryId === libraryId) {
+                var book = this.books[i];
+                if (book.libraryId === libraryId) {
                     result++;
                 }
             }

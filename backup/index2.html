@@ -1,0 +1,262 @@
+<script>
+
+    var DB = {
+
+        //============== shortcut ==============
+
+        log: function (l) {
+            console.log(l);
+        },
+
+        // =============== DATA ================
+
+        users: [],
+        libraries: [],
+        books: [],
+
+        // ============= FUNCTIONS =============
+
+        addUser: function (userName, age) {
+            var user = {
+                "id": this.users.length + 1,
+                "userName": userName,
+                "age": age
+            }
+            this.users.push(user);
+        },
+
+        addLibrary: function (libraryName, city) {
+            var library = {
+                "id": this.libraries.length + 1,
+                "libraryName": libraryName,
+                "city": city
+            }
+            this.libraries.push(library);
+        },
+
+        addBook: function (libraryId, bookName) {
+            var book = {
+                "id": this.books.length + 1,
+                "libraryId": libraryId,
+                "bookName": bookName
+            }
+            this.books.push(book);
+        },
+
+        countUsers: function () {
+            return this.users.length;
+        },
+
+        countLibraries: function () {
+            return this.libraries.length;
+        },
+
+        countBooks: function () {
+            return this.books.length;
+        },
+
+        countLibraryBooksById: function (libraryId) {
+            var result = 0;
+            for (var i = 0; i < this.books.length; i++) {
+                var book = this.books[i];
+                if (book.libraryId === libraryId) {
+                    result++;
+                }
+            }
+            return result
+        },
+
+        getBooksByLibraryId: function (libraryId) {
+            var result = [];
+            for (var i = 0; i < this.books.length; i++) {
+                var book = this.books[i];
+                if (book.libraryId === libraryId) {
+                    result.push(book);
+                }
+            }
+            return result;
+        },
+
+
+        getUserByUserName: function (userName) {
+            for (var i = 0; i < this.users.length; i++) {
+                var user = this.users[i];
+                if (user.userName === userName) {
+                    return user;
+                }
+            }
+
+        },
+
+        getLibraryByName: function (libraryName) {
+            for (var i = 0; i < this.libraries.length; i++) {
+                var library = this.libraries[i];
+                if (library.libraryName === libraryName) {
+                    return library;
+                }
+            }
+        },
+
+        getBookByBookName: function (bookName) {
+            for (var i = 0; i < this.books.length; i++) {
+                var book = this.books[i];
+                if (book.bookName === bookName) {
+                    return book;
+                }
+            }
+        },
+
+        borrowBook: function (userName, bookName) {
+            var book = this.getBooksByUserName(userName);
+            if (book.borrowedId === undefined) {
+                var user = this.getUserByUserName(userName);
+                book.borrowedId = user.id;
+            }
+            return book;
+        },
+
+
+        getBorrowedBooks: function (libraryName) {
+
+        },
+
+        countBorrowedBooks: function (libraryName) {
+
+        },
+
+
+        getUnborrowedBooks: function (libraryName) {
+
+        },
+
+        countUnborrowedBooks: function (libraryName) {
+
+        },
+
+
+        getBorrowers: function (libraryName) {
+
+        },
+
+
+        countBorrowers: function (libraryName) {
+
+        },
+
+
+        listBorrowers: function (libraryName) {
+
+        },
+
+        getBooksByUserName: function (userName) {
+
+        },
+
+        removeUser: function (userName) {
+
+        },
+
+        returnBooks: function (userName) {
+
+        },
+
+        removeUserAndUnborrowBooks: function (userName) {
+
+        },
+
+
+        removeLibrary: function (libraryName) {
+
+        },
+
+        removeBooks: function (libraryName) {
+
+        },
+
+        removeLibraryAndAllBooks: function (libraryName) {
+
+        },
+
+    };
+
+
+    var log = function (l) {
+        console.log(l);
+    }
+
+    // Add users
+    DB.addUser("Michael", 30);
+    DB.addUser("Gael", 25);
+    DB.addUser("Ian", 18);
+    DB.addUser("Romane", 20);
+    DB.addUser("Thierry", 50);
+    DB.addUser("Lydie", 48);
+    DB.addUser("Arnaud", 21);
+    DB.addUser("Chung", 23);
+    DB.addUser("Adolf", 12);
+    DB.addUser("Alix", 23);
+    DB.addUser("Tom", 2);
+    DB.addUser("Jack", 2);
+    DB.addUser("Peter", 30);
+
+
+    // Add libraries
+    DB.addLibrary("Librairie Delille", "Clermont-Ferrand");
+    DB.addLibrary("Librairie de la cathédrale", "Reims");
+    DB.addLibrary("Librairie Centreville", "Lyon");
+    DB.addLibrary("Librairie la Tour Eiffel", "Paris");
+    DB.addLibrary("Librairie la Grand Ferrand", "Cebazat");
+
+
+    // Add books
+    DB.addBook(1, "Lord of the Rings");
+    DB.addBook(1, "Harry Potter");
+    DB.addBook(1, "Narnia");
+    DB.addBook(2, "Willy Wonka");
+    DB.addBook(2, "King Kong");
+    DB.addBook(2, "Da Vinci Code");
+    DB.addBook(3, "JS code part.1");
+    DB.addBook(4, "JS code part.2");
+    DB.addBook(3, "Delf B1 francais");
+    DB.addBook(4, "Delf A2 francais");
+    DB.addBook(5, "How to insult your boss properly");
+    DB.addBook(5, "Street Fighter - how to spam like a fucktard");
+    DB.addBook(4, "Node.js 2019");
+    DB.addBook(2, "How I got my first 5mld USD");
+    DB.addBook(2, "Bible v.9");
+    DB.addBook(1, "Le tour a Reims avec Gael and Alix");
+    DB.addBook(5, "Millenium");
+    DB.addBook(2, "Millenium 2");
+
+    // Count users total
+    DB.countUsers();
+
+    // Count libraries total
+    DB.countLibraries();
+
+    // Count books total
+    DB.countBooks();
+
+    // Counts books of given library
+
+    log(DB.getBooksByLibraryId(2));
+    log(DB.countLibraryBooksById(2));
+    log(DB.getBooksByLibraryId(1));
+    log(DB.countLibraryBooksById(1));
+
+    // Get user by userName
+    log("getUserbyUsername : " + JSON.stringify(DB.getUserByUserName("Michael")));
+
+    // Get library by libraryName
+    log("getLibraryByName : " + JSON.stringify(DB.getLibraryByName("Librairie de la cathédrale")));
+
+    // Get book by title 
+    log("getBookByBookName : " + JSON.stringify(DB.getBookByBookName("King Kong")));
+
+    log("Borrow book Michael : " + DB.borrowBook("Michael", "Narnia"));
+
+    log(DB);
+
+
+
+</script>
