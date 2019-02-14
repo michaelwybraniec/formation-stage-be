@@ -10,18 +10,16 @@
 </head>
 
 <style>
+    /* /////////////// Bootstrap boarder */
     /* .row {
-        border: 1px solid red; 
+        border: 1px solid red;
     }
 
     div[class^="col-"] {
         border: 1px solid green;
     } */
 
-    /* #color-adj {
-        background-color: #F2F2F2;
-    } */
-
+    /* /////////////// styling for the color indentifing the user */
     .circle {
         height: 10px;
         width: 10px;
@@ -33,60 +31,39 @@
 
 <body>
     <div class="container mt-3">
-
-        <div class="row">
-
-            <div class="col-12 col-sm-8 mx-auto text-right">
-
+        <div class="col-12 col-sm-8 mx-auto text-right">
+            <div class="row">
                 <div class="col-12">
                     <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
-                    "
-                        class="img-circle" alt="Cinque Terre" width="30" height="30" alt="...">
+                    " class="img-circle" alt="Cinque Terre" width="30" height="30" alt="...">
                 </div>
-
                 <div class="col-12">
-
                     <!-- //////////////////////////////////////////// Welcome bar -->
-                    <div class='circle' style='background-color:"color"'></div>
-
-                    <small>Bonjour </small><small id="welcome-name" class="text-left"></small><small> !    </small>
+                    <div class='circle'></div>
+                    <small>Bonjour </small><small id="welcome-name" class="text-left"></small><small> ! </small>
                 </div>
-
             </div>
         </div>
 
-        <div class="row mb-1">
-
-            <div class="col-12 col-sm-8 mx-auto">
-
-                <div class="row">
-
-
-                    <div id="color-adj" class="col-12 mt-2 mb-2 p-2 rounded mx-auto">
-                 
-                        <input type="text" id="post-content-input" rows="6" class="form-control text-center"
-                            placeholder="message..."></input>
-                        <button onclick="postArticle()" class="btn btn-dark btn-sm btn-block">Post</button>
-                   
-                    </div>
+        <div class="col-12 col-sm-8 mx-auto">
+            <div class="row">
+                <div id="color-adj" class="col-12 mt-2 mb-2 p-2 rounded mx-auto">
+                    <!-- //////////////////////////////////////////// Input and submit -->
+                    <input type="text" id="post-content-input" rows="6" class="form-control text-center"
+                        placeholder="message..."></input>
+                    <button onclick="postArticle()" class="btn btn-dark btn-sm btn-block">Post</button>
                 </div>
             </div>
-
-            <div id="color-adj" class="col-12 col-sm-8 mx-auto">
-                <div class="row">
-
-                    <div class="col-6 mt-2 mb-2 bg-white">
-
-                        <!-- ////////////////////////////////////////// Individual articles -->
-                        <p class="font-weight-light" id="get-content-result-individual"></p>
-                    </div>
-
-                    <div class="col-6 mt-2 mb-2 bg-white">
-
-                        <!-- ////////////////////////////////////////// All articles -->
-                        <p class="font-weight-normal" id="get-content-result-all"></p>
-                    </div>
-
+        </div>
+        <div class="col-12 col-sm-8 mx-auto">
+            <div class="row">
+                <div class="col-6 mt-2 bg-white">
+                    <!-- ////////////////////////////////////////// Individual articles -->
+                    <p class="font-weight-light" id="get-content-result-individual"></p>
+                </div>
+                <div class="col-6 mt-2 bg-white">
+                    <!-- ////////////////////////////////////////// All articles -->
+                    <p class="font-weight-normal" id="get-content-result-all"></p>
                 </div>
             </div>
         </div>
@@ -94,10 +71,10 @@
 </body>
 
 <script>
+
     function getColor() {
         axios.get('/user/color')
             .then(function (response) {
-                console.log(response.data)
                 var element = document.getElementById("color-adj");
                 element.style.backgroundColor = response.data;
             })
@@ -105,11 +82,8 @@
                 console.log(error);
             });
     };
-    getColor();
-
-
-
-
+    getColor();  
+    
     function getUserNameForTheTitle() {
         axios.get('/user')
             .then(function (response) {
@@ -122,79 +96,42 @@
     getUserNameForTheTitle();
 
 
-
-
-    function getUserNameForTheContent() {
-        axios.get('/user')
-            .then(function (response) {
-                console.log(response.data);
-                result = response.data.username;
-                return result;
-                console.log(result);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    function displayArticles(articles, articlesLocation) {
+        document.getElementById(articlesLocation).innerHTML = "";
+        for (var i = articles.length - 1; i >= 0; i--) {
+            var articleOwner = articles[i].articleOwner;
+            var date = new Date(articles[i].datePosted).toLocaleString();
+            var content = articles[i].content;
+            var color = articleOwner.color;
+            var userName = articleOwner.username;
+            var result = "<small><small>" 
+                + date + "</small><br><div class='circle' style='background-color:"
+                + color + "'></div><small><b>"
+                + userName + "</b>: </small>"
+                + content + "</small><hr>";
+            document.getElementById(articlesLocation).innerHTML += result;
+        }
     };
-    getUserNameForTheContent();
-
-
 
 
     function getAllArticles() {
         axios.get("/articles/all")
             .then(function (response) {
-                console.log("Get all articles")
-                console.log(response.data)
-                document.getElementById("get-content-result-all").innerHTML = "";
-
-                for (var i = response.data.length - 1; i >= 0; i--) {
-                    console.log(response.data[i].title);
-                    console.log(response.data[i].content);
-
-                    var date = new Date(response.data[i].datePosted).toLocaleString();
-                    var title = response.data[i].title;
-                    var content = response.data[i].content;
-                    var color = response.data[i].color;
-                    var user = response.data[i].ownerName;
-                    var result = "<small><small>" + date + "</small><br><div class='circle' style='background-color:" + color + "'></div><small><b>" + user + "</b>: </small>" + content + "</small><hr>";
-
-                    console.log(result);
-                    document.getElementById("get-content-result-all").innerHTML += result;
-                }
+                if (!response.data) return;
+                return displayArticles(response.data, "get-content-result-all");
             })
             .catch(function (error) {
                 console.log(error);
             });
-    }; 
+    };
     getAllArticles();
-
-
 
 
     function getUserArticles() {
         axios.get('/articles/user')
             .then(function (response) {
-                console.log("Get User articles")
-                console.log(response.data);
                 if (!response.data) return;
-
-                document.getElementById("get-content-result-individual").innerHTML = "";
-
-                for (var i = response.data.length - 1; i >= 0; i--) {
-                    console.log(response.data[i].title);
-                    console.log(response.data[i].content);
-
-                    var date = new Date(response.data[i].datePosted).toLocaleString();
-                    // var title = response.data[i].title;
-                    var content = response.data[i].content;
-                    var color = response.data[i].color;
-                    var user = response.data[i].ownerName;
-                    var result = "<small><small>" + date + "</small><br><div class='circle' style='background-color:" + color + "'></div><small><b>" + user + "</b>: </small>" + content + "</small><hr>";
-
-                    console.log(result);
-                    document.getElementById("get-content-result-individual").innerHTML += result;
-                }
+                return displayArticles(response.data, "get-content-result-individual");
             })
             .catch(function (error) {
                 console.log(error);
@@ -203,21 +140,19 @@
     getUserArticles();
 
 
-
-
     function postArticle() {
         var content = document.getElementById("post-content-input").value;
-
         var data = {
-            "datePosted": Date.now(),
-            "content": content,
+            "content": content
         };
-
         axios.post("/articles", data)
             .then(function (response) {
                 // Refresh the articles on the page
                 getAllArticles();
                 getUserArticles();
+
+                // Empty input 
+                document.getElementById("post-content-input").value = "";
             })
             .catch(function (error) {
                 console.log(error);

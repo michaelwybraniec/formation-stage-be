@@ -12,8 +12,9 @@ var indexRouter = require('./routes/indexRouter');
 var articlesRouter = require('./routes/articlesRouter');
 var usersRouter = require('./routes/usersRouter');
 
-var Database = require('./db/Database.js');
 var mongoose = require('mongoose');
+
+var User = require("./models/User");
 
 var app = express();
 
@@ -47,12 +48,13 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
   },
   function (username, password, done) {
-    // Try to find a user with provided name 
-    var user = Database.getUser(username);
+    User.findOne({username: username}, function(err, result){
+      var user = result;
 
-    // Check is passwords match
-    if (password === user.password) return done(null, user);
-    else return done(null, false);
+      // Check is passwords match
+      if (password === user.password) return done(null, user);
+      else return done(null, false);
+    });
   }
 ));
 
@@ -61,9 +63,11 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (username, done) {
-  // Try to find a user with provided name 
-  var user = Database.getUser(username);
-  return done(null, user);
+  User.findOne({username: username}, function(err, result){
+    var user = result;
+
+    return done(null, user);
+  });
 });
 
 // Database 
@@ -84,11 +88,11 @@ app.use('/', indexRouter);        // "http://localhost:3000/"
 
 // Secure routes above with passport : user will need to be authenticated to access them
 app.use(function (req, res, next) {
-  if (req.session.passport == null || !req.isAuthenticated()) res.sendStatus(403);
+  if (req.session.passport == null || !req.isAuthenticated()) res.redirect("/");
   else next();
 });
 
-app.use('/articles', articlesRouter); 
+app.use('/articles', articlesRouter);
 app.use('/user', usersRouter);
 
 

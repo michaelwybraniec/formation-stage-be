@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var Database = require('../db/Database.js');
 var passport = require('passport');
 
 var User = require("../models/User");
@@ -24,46 +23,34 @@ router.get('/registration', function (req, res, next) {
 
 // ==== Registration 
 router.post('/registration', function (req, res, next) {
-  console.log(req.body);
-
-  // If user already exists, return an error
-  var user = Database.getUser(req.body.username);
-  if (user) res.sendStatus(500);
- 
-  // Database.addUser(req.body);
-
+  // Save user in Mongo
   new User(req.body).save(function (err) {
-      if (err){
-        console.log(err);
-        return res.sendStatus(500);
-      } 
+    if (err) return res.sendStatus(500);
 
-      return res.sendStatus(200);
-    });
+    return res.sendStatus(200);
+  });
 
 });
 
 
 // ==== Login 
 router.post('/login', function (req, res, next) {
-  var user = Database.getUser(req.body.username);
+  User.findOne({username: req.body.username}, function(err, result){
+    var user = result;
 
-  // If user does not exist or passwords don't match, return error
-  if (!user || user.password !== req.body.password) {
-    res.sendStatus(500);
-  }
+    // If user does not exist or passwords don't match, return error
+    if (!user || user.password !== req.body.password) {
+      return res.sendStatus(500);
+    }
 
-  // Then pass the user to Passport so that Passport can log in him
-  passport.authenticate('local', function(err, user, info) {
-    req.logIn(user, function(err) {
-      if (err) return next(err);
-      return res.sendStatus(200);
-    });
-  })(req, res, next);
+    // Then pass the user to Passport so that Passport can log in him
+    passport.authenticate('local', function(err, user, info) {
+      req.logIn(user, function(err) {
+        if (err) return next(err);
+        return res.sendStatus(200);
+      });
+    })(req, res, next);
+  });
 });
-
-
-
-
 
 module.exports = router;

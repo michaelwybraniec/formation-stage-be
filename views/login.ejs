@@ -129,22 +129,17 @@
     function post(data) {
         axios.post("/login", data)
             .then(function (response) {
-                console.log(response.status)
-
                 if (response.status === 200) {
-                    console.log(response.data)
-
                     document.getElementById("login-error").innerHTML
                         = "<small class='text-success'><b>Sweet!</b><small>";
-                    setTimeout(function () {
-                        window.location = "/articles";
-                    }, 1000);
+                    
+                    // Redirect
+                    window.location = "/articles";
                 }
             })
             .catch(function (error) {
                 document.getElementById("login-error").innerHTML
                     = "<small class='text-danger'><b>Register or try again.</b><small>";
-                console.log(error);
             });
     };
 
