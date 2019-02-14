@@ -14,6 +14,10 @@ router.get('/', function (req, res, next) {
 
 
 /** ======================== DATA ============================ */
+
+
+
+
 router.get('/all', function (req, res, next) {
 
   Article.aggregate([

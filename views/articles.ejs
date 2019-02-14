@@ -27,31 +27,59 @@
         display: inline-block;
         margin-right: 7px;
     }
+
+
+    .logout {
+        width: 15px;
+        border-radius: 50px;
+        float: right;
+        display: inline-block;
+        margin-top: 6px;
+        margin-left: 1px;
+        /* margin-right: 2px; */
+    }
+
+    .logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    .welcomeName {
+        font-weight: bold;
+    }
+
 </style>
 
 <body>
+
     <div class="container mt-3">
         <div class="col-12 col-sm-8 mx-auto text-right">
             <div class="row">
                 <div class="col-12">
                     <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
-                    " class="img-circle" alt="Cinque Terre" width="30" height="30" alt="...">
+                    " class="logo" alt="Cinque Terre">
+                    <a class="button" href="/logout">
+                        <img src="https://png.pngtree.com/svg/20161011/logout_1185661.png" class="logout">
+                        <div class="logout"></div>
+                    </a>
                 </div>
                 <div class="col-12">
                     <!-- //////////////////////////////////////////// Welcome bar -->
                     <div class='circle'></div>
-                    <small>Bonjour </small><small id="welcome-name" class="text-left"></small><small> ! </small>
+                    <b><small>Bonjour </small><small id="welcome-name" class="welcomeName"></small><small> ! </small>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-sm-8 mx-auto">
             <div class="row">
-                <div id="color-adj" class="col-12 mt-2 mb-2 p-2 rounded mx-auto">
+                <div class="col-12 mb-3 rounded mx-auto">         
                     <!-- //////////////////////////////////////////// Input and submit -->
                     <input type="text" id="post-content-input" rows="6" class="form-control text-center"
-                        placeholder="message..."></input>
+                    placeholder="message..."></input>
                     <button onclick="postArticle()" class="btn btn-dark btn-sm btn-block">Post</button>
+                    <div id="color-adj" class="col-12 mb-2 p-1 rounded mx-auto"></div>
+                    
                 </div>
             </div>
         </div>
@@ -82,8 +110,8 @@
                 console.log(error);
             });
     };
-    getColor();  
-    
+    getColor();
+
     function getUserNameForTheTitle() {
         axios.get('/user')
             .then(function (response) {
@@ -104,7 +132,7 @@
             var content = articles[i].content;
             var color = articleOwner.color;
             var userName = articleOwner.username;
-            var result = "<small><small>" 
+            var result = "<small><small>"
                 + date + "</small><br><div class='circle' style='background-color:"
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
@@ -158,6 +186,12 @@
                 console.log(error);
             });
     };
+
+    // function logout() {
+    //     axios.get("/logout");
+    // };
+
+
 
 </script>
 
