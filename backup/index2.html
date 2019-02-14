@@ -107,29 +107,50 @@
         },
 
         borrowBook: function (userName, bookName) {
-            var book = this.getBooksByUserName(userName);
-            if (book.borrowedId === undefined) {
+            var book = this.getBookByBookName(bookName);
+            if (book.borrowerId === undefined) {
                 var user = this.getUserByUserName(userName);
-                book.borrowedId = user.id;
+                book.borrowerId = user.id;
             }
             return book;
         },
 
 
         getBorrowedBooks: function (libraryName) {
+               var library = this.getLibraryByName(libraryName);
+               var books = this.getBooksByLibraryId(library.id);
+               var borrowedBooks = [];
 
+               for (var i = 0; i < books.length; i++){
+                   if(books[i].borrowerId !== undefined){
+                       borrowedBooks.push(books[i]);
+                   }
+               }
+               return borrowedBooks;
         },
 
         countBorrowedBooks: function (libraryName) {
-
+            var borrowedBooks = this.getBorrowedBooks(libraryName);
+            return borrowedBooks.length;
         },
-
 
         getUnborrowedBooks: function (libraryName) {
+            var library = this.getLibraryByName(libraryName);
+               var books = this.getBooksByLibraryId(library.id);
+               var unborrowedBooks = [];
 
+               for (var i = 0; i < books.length; i++){
+                   if(books[i].borrowerId === undefined){
+                       unborrowedBooks.push(books[i]);
+                   }
+               }
+               return unborrowedBooks;
         },
 
+
         countUnborrowedBooks: function (libraryName) {
+            var unborrowedBooks = this.getUnborrowedBooks(libraryName);
+            return unborrowedBooks.length;
 
         },
 
@@ -149,7 +170,15 @@
         },
 
         getBooksByUserName: function (userName) {
-
+            var user = this.getUserByUserName;
+            var bookToReturn = [];
+            for (var i = 0; i < this.books.length; i++) {
+                var book = this.books[i];
+                if (user.id === books.borrowerId) {
+                    booksToReturn.push(book);
+                }
+            }
+            retun bookToReturn;
         },
 
         removeUser: function (userName) {
@@ -253,7 +282,20 @@
     // Get book by title 
     log("getBookByBookName : " + JSON.stringify(DB.getBookByBookName("King Kong")));
 
-    log("Borrow book Michael : " + DB.borrowBook("Michael", "Narnia"));
+    log("Borrow book Michael : " + JSON.stringify(DB.borrowBook("Michael","King Kong")));
+    log("Borrow book Michael : " + JSON.stringify(DB.borrowBook("Ian","Willy Wonka")));
+    log("Borrow book Michael : " + JSON.stringify(DB.borrowBook("Michael","Willy Wonka")));
+    log("Borrow book Michael : " + JSON.stringify(DB.borrowBook("Peter","Millenium")));
+
+    log("getBorrowedBooks : " + JSON.stringify(DB.getBorrowedBooks("Librairie de la cathédrale")));
+    log("getUnborrowedBooks : " + JSON.stringify(DB.getUnborrowedBooks("Librairie de la cathédrale")));
+
+    log("countBorrowedBooks : " + DB.countBorrowedBooks("Librairie de la cathédrale"));
+    log("countBorrowedBooks : " + DB.countBorrowedBooks("Librairie Centreville"));
+    log("countBorrowedBooks : " + DB.countBorrowedBooks("Librairie la Grand Ferrand"));
+    log("countUnborrowedBooks : " + DB.countUnborrowedBooks("Librairie de la cathédrale"));
+    log("countUnborrowedBooks : " + DB.countUnborrowedBooks("Librairie Centreville"));
+    log("countUnborrowedBooks : " + DB.countUnborrowedBooks("Librairie la Grand Ferrand"));
 
     log(DB);
 
