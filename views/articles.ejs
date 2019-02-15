@@ -11,6 +11,7 @@
 
 <style>
     /* /////////////// Bootstrap boarder */
+
     /* .row {
         border: 1px solid red;
     }
@@ -25,76 +26,76 @@
         width: 10px;
         border-radius: 20px;
         display: inline-block;
-        margin-right: 7px;
+        margin-right: 5px;
+        margin-left: 5px;
     }
 
 
     .logout {
-        width: 15px;
-        border-radius: 50px;
-        float: right;
+        width: 13px;
+        border-radius: 40px;
+        /* float: center; */
         display: inline-block;
-        margin-top: 6px;
-        margin-left: 1px;
+        /* margin-top: 6px; */
+        /* margin-left: 1px; */
         /* margin-right: 2px; */
     }
 
     .logo {
-        width: 55px;
-        height: 55px;
+        width: 30px;
+        height: 30px;
     }
 
     .welcomeName {
         font-weight: bold;
     }
 
+    .sep {
+        border-top: 1px solid rgb(223, 223, 223);
+    }
 </style>
 
 <body>
-
     <div class="container mt-3">
-        <div class="col-12 col-sm-8 mx-auto text-right">
-            <div class="row">
-                <div class="col-12">
-                    <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
-                    " class="logo" alt="Cinque Terre">
-                    <a class="button" href="/logout">
-                        <img src="https://png.pngtree.com/svg/20161011/logout_1185661.png" class="logout">
-                        <div class="logout"></div>
-                    </a>
-                </div>
-                <div class="col-12">
-                    <!-- //////////////////////////////////////////// Welcome bar -->
-                    <div class='circle'></div>
-                    <b><small>Bonjour </small><small id="welcome-name" class="welcomeName"></small><small> ! </small>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-8 mx-auto">
-            <div class="row">
-                <div class="col-12 mb-3 rounded mx-auto">         
+        <div class="col-12 mx-auto">
+                <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
+                " class="logo" alt="Cinque Terre">
+            <div class="row">  
+                <div class="col-12 col-sm-8 col-md-9 mb-2 mx-auto">
                     <!-- //////////////////////////////////////////// Input and submit -->
                     <input type="text" id="post-content-input" rows="6" class="form-control text-center"
                     placeholder="message..."></input>
-                    <button onclick="postArticle()" class="btn btn-dark btn-sm btn-block">Post</button>
-                    <div id="color-adj" class="col-12 mb-2 p-1 rounded mx-auto"></div>
-                    
+                </div>
+                <div class="col-12 col-sm-4 col-md-3 mb-2 mx-auto">
+                    <button onclick="postArticle()" class="btn btn-dark btn-block">Post</button>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-8 mx-auto">
+        <div class="col-12 mx-auto">
             <div class="row">
-                <div class="col-6 mt-2 bg-white">
+                <div class="col-4 bg-white">
                     <!-- ////////////////////////////////////////// Individual articles -->
+                    <div class="row">
+                        <div class="col-12 bg-white">
+                            <!-- //////////////////////////////////////////// Welcoming text  -->                    
+                            <a class="button" href="/logout">
+                                <img src="https://png.pngtree.com/svg/20161011/logout_1185661.png" class="logout">
+                                <!-- <div class="logout"><small>LOGOUT</small></div> -->
+                            </a>
+                            <b><small>Bonjour </small><small id="welcome-name" class="welcomeName"></small><small> !
+                                </small></b>
+                        </div>
+                    </div>
+                    <div id="color-adj" class="col-12 mx-auto p-1"></div>
                     <p class="font-weight-light" id="get-content-result-individual"></p>
                 </div>
-                <div class="col-6 mt-2 bg-white">
+                <div class="col-8 bg-white">
                     <!-- ////////////////////////////////////////// All articles -->
                     <p class="font-weight-normal" id="get-content-result-all"></p>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 
@@ -132,11 +133,12 @@
             var content = articles[i].content;
             var color = articleOwner.color;
             var userName = articleOwner.username;
-            var result = "<small><small>"
-                + date + "</small><br><div class='circle' style='background-color:"
+            var result = "<small>" +
+                "<small>" + date + "</small>" +
+                "<div class='circle' style='background-color:"
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
-                + content + "</small><hr>";
+                + content + "</small><div class='sep'></div>";
             document.getElementById(articlesLocation).innerHTML += result;
         }
     };

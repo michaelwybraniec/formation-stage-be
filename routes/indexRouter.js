@@ -30,24 +30,17 @@ router.get('/logout', function (req, res, next) {
 
 // ==== Registration 
 router.post('/registration', function (req, res, next) {
-  // Save user in Mongo
-  // new User(req.body).save(function (err) {
-  //   if (err) return res.sendStatus(500);
-
-  //   return res.sendStatus(200);
-  // });
-
-  var successCallback = function() {return res.sendStatus(200);};
-  var errorCallback = function () {return res.sendStatus(500);};
+  var successCallback = function () { return res.sendStatus(200); };
+  var errorCallback = function () { return res.sendStatus(500); };
   UserDAO.create(req.body, successCallback, errorCallback);
 
 });
 
 
-// ==== Login 
+// ==== Login and Authenticate
 router.post('/login', function (req, res, next) {
-  User.findOne({ username: req.body.username }, function (err, result) {
-    var user = result;
+  var errorCallback = function () { return res.sendStatus(500); };
+  var successCallback = function (user) {
 
     // If user does not exist or passwords don't match, return error
     if (!user || user.password !== req.body.password) {
@@ -61,7 +54,16 @@ router.post('/login', function (req, res, next) {
         return res.sendStatus(200);
       });
     })(req, res, next);
-  });
+  };
+  
+  UserDAO.find(req.body.username, successCallback, errorCallback);
 });
+
+
+
+
+
+
+
 
 module.exports = router;

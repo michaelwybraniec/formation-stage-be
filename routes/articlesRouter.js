@@ -5,57 +5,35 @@ var mongoose = require('mongoose');
 var User = require("../models/User");
 var Article = require("../models/Article");
 
-/** ======================== PAGES ============================ */
+var ArticleDAO = require("../dao/ArticleDAO");
 
+
+/** ======================== PAGES ============================ */
 router.get('/', function (req, res, next) {
   res.render("articles");
 });
 
 
-
 /** ======================== DATA ============================ */
 
-
-
-
 router.get('/all', function (req, res, next) {
-
-  Article.aggregate([
-    { $lookup: { from: "users", localField: "ownerId", foreignField: "_id", as: "articleOwner" } },
-    { $unwind: "$articleOwner" }
-  ], function (err, results) {
-
-    res.send(results);
-  });
-
+  var successCallback = function (articles) { return res.send(articles); };
+  var errorCallback = function () { return res.sendStatus(500); };
+  ArticleDAO.getAll(successCallback, errorCallback);
 });
 
+
 router.get('/user', function (req, res, next) {
-
-  Article.aggregate([
-    { $lookup: { from: "users", localField: "ownerId", foreignField: "_id", as: "articleOwner" } },
-    { $unwind: "$articleOwner" },
-    { $match: { "articleOwner._id": new mongoose.Types.ObjectId(req.user._id) } }
-  ], function (err, results) {
-
-    res.send(results);
-  });
-
+  var successCallback = function (articles) { return res.send(articles); };
+  var errorCallback = function () { return res.sendStatus(500); };
+  ArticleDAO.getByUserId(req.user._id, successCallback, errorCallback);
 });
 
 
 router.post('/', function (req, res, next) {
-  // Fetch FE data and add a few important fields
-  var article = req.body;
-  article.ownerId = req.user._id;
-  article.datePosted = Date.now();
-
-  //  Save in Mongo
-  new Article(article).save(function (err) {
-    if (err) return res.sendStatus(500);
-
-    return res.sendStatus(200);
-  });
+  var successCallback = function () { return res.sendStatus(200); };
+  var errorCallback = function () { return res.sendStatus(500); };
+  ArticleDAO.save(req.body, req.user._id, successCallback, errorCallback);
 });
 
 
