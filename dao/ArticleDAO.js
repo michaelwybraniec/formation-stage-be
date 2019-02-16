@@ -11,6 +11,18 @@ function getAll(successCallback, errorCallback) {
     });
 };
 
+
+
+function getOneById(articleId, successCallback, errorCallback) {
+    Article.findOne({ _id: articleId }, function (err, result) {
+        var article = result;
+        if (err) return errorCallback();
+        return successCallback(article);
+    });
+};
+
+
+
 function getByUserId(userId, successCallback, errorCallback) {
 
     Article.aggregate([
@@ -23,17 +35,19 @@ function getByUserId(userId, successCallback, errorCallback) {
     });
 };
 
-function save(article, userId, successCallback, errorCallback){
 
-      // Fetch FE data and add a few important fields
-  article.ownerId = userId;
-  article.datePosted = Date.now();
 
-  //  Save in Mongo
-  new Article(article).save(function (err) {
-    if (err) return errorCallback();
-    return successCallback();
-  });
+function save(article, userId, successCallback, errorCallback) {
+
+    // Fetch FE data and add a few important fields
+    article.ownerId = userId;
+    article.datePosted = Date.now();
+
+    //  Save in Mongo
+    new Article(article).save(function (err) {
+        if (err) return errorCallback();
+        return successCallback();
+    });
 
 };
 
@@ -46,4 +60,5 @@ module.exports = {
     getAll: getAll,
     getByUserId: getByUserId,
     save: save,
+    getOneById: getOneById
 };

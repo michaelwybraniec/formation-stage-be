@@ -21,6 +21,7 @@
     } */
 
     /* /////////////// styling for the color indentifing the user */
+
     .circle {
         height: 10px;
         width: 10px;
@@ -30,20 +31,25 @@
         margin-left: 5px;
     }
 
+    .likeButton {
+        height: 10px;
+        width: 10px;
+    }
 
     .logout {
-        width: 13px;
-        border-radius: 40px;
+        width: 12px;
+        /* border-radius: 50px; */
         /* float: center; */
         display: inline-block;
-        /* margin-top: 6px; */
+        margin-bottom: 2px;
         /* margin-left: 1px; */
         /* margin-right: 2px; */
     }
 
     .logo {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
+        margin-bottom: 5px;
     }
 
     .welcomeName {
@@ -58,43 +64,48 @@
 <body>
     <div class="container mt-3">
         <div class="col-12 mx-auto">
-                <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
-                " class="logo" alt="Cinque Terre">
-            <div class="row">  
-                <div class="col-12 col-sm-8 col-md-9 mb-2 mx-auto">
-                    <!-- //////////////////////////////////////////// Input and submit -->
-                    <input type="text" id="post-content-input" rows="6" class="form-control text-center"
-                    placeholder="message..."></input>
-                </div>
-                <div class="col-12 col-sm-4 col-md-3 mb-2 mx-auto">
-                    <button onclick="postArticle()" class="btn btn-dark btn-block">Post</button>
-                </div>
-            </div>
+            <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
+                " class="logo" alt="logo">
         </div>
+
         <div class="col-12 mx-auto">
             <div class="row">
                 <div class="col-4 bg-white">
                     <!-- ////////////////////////////////////////// Individual articles -->
                     <div class="row">
-                        <div class="col-12 bg-white">
-                            <!-- //////////////////////////////////////////// Welcoming text  -->                    
+                        <div class="col-12 bg-white mb-2">
+                            <!-- //////////////////////////////////////////// Welcoming text  -->
                             <a class="button" href="/logout">
-                                <img src="https://png.pngtree.com/svg/20161011/logout_1185661.png" class="logout">
-                                <!-- <div class="logout"><small>LOGOUT</small></div> -->
+                                <img src="https://www.shareicon.net/download/2015/10/17/657490_arrow_512x512.png" class="logout">
                             </a>
-                            <b><small>Bonjour </small><small id="welcome-name" class="welcomeName"></small><small> !
-                                </small></b>
+                            <b>
+                                <small>Bonjour </small>
+                                <small id="welcome-name" class="welcomeName"></small>
+                                <small> !
+                                </small>
+                            </b>
+                            <!-- //////////////////////////////////////////// Color bar  -->
+                            <div id="color-adj" class="col-12 mx-auto mt-1 p-1 rounded"></div>
                         </div>
                     </div>
-                    <div id="color-adj" class="col-12 mx-auto p-1"></div>
                     <p class="font-weight-light" id="get-content-result-individual"></p>
                 </div>
                 <div class="col-8 bg-white">
+                    <div class="row">
+                        <div class="col-12 col-sm-8 col-md-9 mb-2 mx-auto">
+                            <!-- //////////////////////////////////////////// Input and submit -->
+                            <input type="text" id="post-content-input" rows="6" class="form-control text-center" placeholder="new message... "></input>
+                        </div>
+                        <div class="col-12 col-sm-4 col-md-3 mb-2 mx-auto">
+                            <button onclick="postArticle()" class="btn btn-dark btn-block">Post</button>
+                        </div>
+                    </div>
                     <!-- ////////////////////////////////////////// All articles -->
                     <p class="font-weight-normal" id="get-content-result-all"></p>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
 </body>
@@ -125,6 +136,45 @@
     getUserNameForTheTitle();
 
 
+    // function displayArticles(articles, articlesLocation) {
+    //     document.getElementById(articlesLocation).innerHTML = "";
+    //     for (var i = articles.length - 1; i >= 0; i--) {
+    //         var articleOwner = articles[i].articleOwner;
+    //         var date = new Date(articles[i].datePosted).toLocaleString();
+    //         var content = articles[i].content;
+    //         var color = articleOwner.color;
+    //         var userName = articleOwner.username;
+    //         var articleId = articles[i]._id;
+    //         var result = "<small>" +
+    //             "<small>" + date + "</small>" +
+    //             "<div class='circle' style='background-color:"
+    //             + color + "'></div><small><b>"
+    //             + userName + "</b>: </small>"
+    //             + content +  "<a href='/logout' value=" + articleId + ">"
+    //             + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' height='12px' width='15px' margin-bottom='5'></a>" 
+    //             + "</small><div class='sep'></div>";
+    //         document.getElementById(articlesLocation).innerHTML += result;
+    //     }
+    // };
+    
+    
+
+
+    function like(articleId) {
+        console.log("LIKE!")
+        var link = "/articles/like/" + articleId;
+        console.log("link : " + link);
+
+        axios.get(link)
+            .then(function (response) {
+                if (!response.data) return;
+                console.log(200)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     function displayArticles(articles, articlesLocation) {
         document.getElementById(articlesLocation).innerHTML = "";
         for (var i = articles.length - 1; i >= 0; i--) {
@@ -133,15 +183,24 @@
             var content = articles[i].content;
             var color = articleOwner.color;
             var userName = articleOwner.username;
+            var articleId = articles[i]._id;
+
             var result = "<small>" +
                 "<small>" + date + "</small>" +
                 "<div class='circle' style='background-color:"
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
-                + content + "</small><div class='sep'></div>";
+                + content + "<span onclick=\"like('" + articleId + "')\">"
+                + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' height='12px' width='15px' class='text-right'></span>"
+                + "</small><div class='sep'></div>";
             document.getElementById(articlesLocation).innerHTML += result;
         }
     };
+
+
+
+
+
 
 
     function getAllArticles() {
