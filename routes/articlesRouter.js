@@ -17,30 +17,30 @@ router.get('/', function (req, res, next) {
 /** ======================== DATA ============================ */
 
 router.get('/like/:articleId', function (req, res, next) {
+  var errorCallback = function () { return res.sendStatus(500); };
+  var successCallback = function () { return res.sendStatus(200); };
 
-  var successCallback = function (article) { 
+  var updateLikesCallback = function (article) { 
     // Article never ever had any like before
     if(!article.likersIds){
       article.likersIds = [];
-      article.likersIds.push(req.user._id);
     }
     // The article has some likes already
     else{
       for (var i = 0; i < article.likersIds.length; i++) {
-        if (articles.likersIds[i] === re.user._id) return res.sendStatus(500);
+        if (article.likersIds[i].toString() === req.user._id.toString()) return res.sendStatus(500);
       }
-
-      article.likersIds.push(req.user._id);
     }
 
-    // TODO : update the article in the database (Mongo)!
+    // Add the user to the likers
+    article.likersIds.push(req.user._id);
 
-    return res.sendStatus(200);
+    // Update in DB
+    ArticleDAO.updateLikersIds(article._id, article.likersIds, successCallback, errorCallback);
   };
-  var errorCallback = function () { return res.sendStatus(500); };
 
+  ArticleDAO.getOneById(req.params.articleId, updateLikesCallback, errorCallback);
 
-  ArticleDAO.getOneById(req.params.articleId, successCallback, errorCallback);
 });
 
 

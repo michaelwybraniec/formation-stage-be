@@ -10,16 +10,11 @@ var userSchema = new mongoose.Schema({
     type: Date,
 
   },
-  // ownerName: {
-  //   type: String,
-  // }
-  // color: {
-  //   type: String
-  // }
   content: {
     type: String,
     required: true
   }, 
+  likersIds: [mongoose.Schema.Types.ObjectId]
 }, {
   autoCreate: true
 });

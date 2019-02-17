@@ -135,40 +135,19 @@
     };
     getUserNameForTheTitle();
 
-
-    // function displayArticles(articles, articlesLocation) {
-    //     document.getElementById(articlesLocation).innerHTML = "";
-    //     for (var i = articles.length - 1; i >= 0; i--) {
-    //         var articleOwner = articles[i].articleOwner;
-    //         var date = new Date(articles[i].datePosted).toLocaleString();
-    //         var content = articles[i].content;
-    //         var color = articleOwner.color;
-    //         var userName = articleOwner.username;
-    //         var articleId = articles[i]._id;
-    //         var result = "<small>" +
-    //             "<small>" + date + "</small>" +
-    //             "<div class='circle' style='background-color:"
-    //             + color + "'></div><small><b>"
-    //             + userName + "</b>: </small>"
-    //             + content +  "<a href='/logout' value=" + articleId + ">"
-    //             + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' height='12px' width='15px' margin-bottom='5'></a>" 
-    //             + "</small><div class='sep'></div>";
-    //         document.getElementById(articlesLocation).innerHTML += result;
-    //     }
-    // };
-    
     
 
 
     function like(articleId) {
-        console.log("LIKE!")
         var link = "/articles/like/" + articleId;
-        console.log("link : " + link);
 
         axios.get(link)
             .then(function (response) {
                 if (!response.data) return;
-                console.log(200)
+                
+                // Refresh the articles on the page
+                getAllArticles();
+                getUserArticles();
             })
             .catch(function (error) {
                 console.log(error);
@@ -184,6 +163,8 @@
             var color = articleOwner.color;
             var userName = articleOwner.username;
             var articleId = articles[i]._id;
+            var likes = 0;
+            if(articles[i].likersIds) likes = articles[i].likersIds.length;
 
             var result = "<small>" +
                 "<small>" + date + "</small>" +
@@ -191,7 +172,7 @@
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
                 + content + "<span onclick=\"like('" + articleId + "')\">"
-                + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' height='12px' width='15px' class='text-right'></span>"
+                + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' height='12px' width='15px' class='text-right'>" + likes + "</span>"
                 + "</small><div class='sep'></div>";
             document.getElementById(articlesLocation).innerHTML += result;
         }
