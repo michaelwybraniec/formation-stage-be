@@ -22,6 +22,39 @@
 
     /* /////////////// styling for the color indentifing the user */
 
+    body,
+    html {
+        height: 100%;
+    }
+
+    .bg {
+        /* The image used */
+        background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg");
+
+        /* Half height */
+        height: 50%;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+
+
+    .likeNumber {
+        margin-left: 1px;
+
+    }
+
+    .likeButton {
+        height: 12px;
+        width: 15px;
+        margin-bottom: 3px;
+        margin-left: 5px;
+    }
+
+
     .circle {
         height: 10px;
         width: 10px;
@@ -31,10 +64,15 @@
         margin-left: 5px;
     }
 
-    .likeButton {
+    .userOnlineColor {
         height: 10px;
         width: 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 5px;
+        /* margin-left: 5px; */
     }
+
 
     .logout {
         width: 12px;
@@ -50,6 +88,7 @@
         width: 40px;
         height: 40px;
         margin-bottom: 5px;
+        margin: auto;
     }
 
     .welcomeName {
@@ -57,60 +96,115 @@
     }
 
     .sep {
-        border-top: 1px solid rgb(223, 223, 223);
+        /* border-top: 1px solid rgb(240, 240, 240); */
+        right: -50px;
+        height: 1px;
+        background-image: -webkit-gradient(linear, 0 0, 100% 0, from(rgb(150, 150, 150)), to(transparent));
+        background-image: -webkit-linear-gradient(left, rgb(206, 206, 206), transparent);
+        background-image: -moz-linear-gradient(left, rgb(219, 219, 219), transparent);
+        background-image: -o-linear-gradient(left, rgb(216, 216, 216), transparent);
     }
+
+  
+
+
+  } 
+}
 </style>
 
 <body>
+  
     <div class="container mt-3">
-        <div class="col-12 mx-auto">
-            <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
-                " class="logo" alt="logo">
-        </div>
 
-        <div class="col-12 mx-auto">
-            <div class="row">
-                <div class="col-4 bg-white">
-                    <!-- ////////////////////////////////////////// Individual articles -->
-                    <div class="row">
-                        <div class="col-12 bg-white mb-2">
-                            <!-- //////////////////////////////////////////// Welcoming text  -->
-                            <a class="button" href="/logout">
-                                <img src="https://www.shareicon.net/download/2015/10/17/657490_arrow_512x512.png" class="logout">
-                            </a>
-                            <b>
-                                <small>Bonjour </small>
-                                <small id="welcome-name" class="welcomeName"></small>
-                                <small> !
-                                </small>
-                            </b>
-                            <!-- //////////////////////////////////////////// Color bar  -->
-                            <div id="color-adj" class="col-12 mx-auto mt-1 p-1 rounded"></div>
-                        </div>
-                    </div>
+            <div class="bird-container">
+                    <div class="bird"></div>
+                  </div>
+
+
+
+        <!-- ////////////////////////////////////////// Individual articles -->
+        <!-- <div class="d-none d-md-block col-4">
                     <p class="font-weight-light" id="get-content-result-individual"></p>
-                </div>
-                <div class="col-8 bg-white">
-                    <div class="row">
-                        <div class="col-12 col-sm-8 col-md-9 mb-2 mx-auto">
-                            <!-- //////////////////////////////////////////// Input and submit -->
-                            <input type="text" id="post-content-input" rows="6" class="form-control text-center" placeholder="new message... "></input>
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-3 mb-2 mx-auto">
-                            <button onclick="postArticle()" class="btn btn-dark btn-block">Post</button>
-                        </div>
-                    </div>
-                    <!-- ////////////////////////////////////////// All articles -->
-                    <p class="font-weight-normal" id="get-content-result-all"></p>
-                </div>
+                </div> -->
+
+        <!-- //////////////////////////////////////////// logo  -->
+        <div class="col-12 col-sm-2 mb-2 mx-auto text-center">
+            <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
+                    " class="logo" alt="logo">
+        </div>
+        <div class="row bg">
+            <div class="col-12 mb-2 mt-1">
+                <!-- //////////////////////////////////////////// Welcoming text  -->
+                <a class="button" href="/logout">
+                    <img src="https://www.shareicon.net/download/2015/10/17/657490_arrow_512x512.png" class="logout">
+                </a>
+                <b>
+                    <small>Bonjour </small>
+                    <small id="welcome-name" class="welcomeName"></small>
+                    <small> !
+                    </small>
+                </b>
+                <!-- //////////////////////////////////////////// Color bar  -->
+                <div id="color-adj" class="col-12 mx-auto mt-1 p-1 rounded"></div>
+            </div>
+            <div class="col-12 col-sm-8 col-md-9 mb-2 mx-auto">
+                <!-- //////////////////////////////////////////// Input and submit -->
+                <input type="text" id="post-content-input" rows="6" class="form-control text-center" placeholder="new message... "></input>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-2 mx-auto">
+                <button onclick="postArticle()" class="btn btn-dark btn-block">Post</button>
             </div>
         </div>
-    </div>
-    </div>
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-9">
+                <!-- ////////////////////////////////////////// All articles -->
+                <p class="font-weight-normal" id="get-content-result-all"></p>
+
+                <!-- //////////////////////////////////////////////  Users online -->
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-3 mx-auto">
+                <small>ONLINE:</small>
+                <div id="users-online-color" class="userOnlineColor"></div>
+                <small id="userOnlineName" class="welcomeName"></small>
+
+            </div>
+
+
+        </div>
+
     </div>
 </body>
 
 <script>
+
+    function getColor4usersOnline() {
+        axios.get('/user/color')
+            .then(function (response) {
+                var element = document.getElementById("users-online-color");
+                element.style.backgroundColor = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+    getColor4usersOnline();
+
+
+    function getUserNameForOnlineBar() {
+        axios.get('/user')
+            .then(function (response) {
+                document.getElementById("userOnlineName").innerHTML += response.data.username;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+    getUserNameForOnlineBar();
+
+
+
+
 
     function getColor() {
         axios.get('/user/color')
@@ -135,7 +229,8 @@
     };
     getUserNameForTheTitle();
 
-    
+
+
 
 
     function like(articleId) {
@@ -144,7 +239,7 @@
         axios.get(link)
             .then(function (response) {
                 if (!response.data) return;
-                
+
                 // Refresh the articles on the page
                 getAllArticles();
                 getUserArticles();
@@ -164,15 +259,16 @@
             var userName = articleOwner.username;
             var articleId = articles[i]._id;
             var likes = 0;
-            if(articles[i].likersIds) likes = articles[i].likersIds.length;
+            if (articles[i].likersIds) likes = articles[i].likersIds.length;
 
             var result = "<small>" +
-                "<small>" + date + "</small>" +
-                "<div class='circle' style='background-color:"
+                "<small>" + date + "</small>"
+                // + "<span class='likeNumber'>" + likes + "</span>"
+                + "<div class='circle' style='background-color:"
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
                 + content + "<span onclick=\"like('" + articleId + "')\">"
-                + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' height='12px' width='15px' class='text-right'>" + likes + "</span>"
+                + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>"
                 + "</small><div class='sep'></div>";
             document.getElementById(articlesLocation).innerHTML += result;
         }
