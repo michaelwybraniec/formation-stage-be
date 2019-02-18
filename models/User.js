@@ -26,6 +26,11 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  online: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
 }, {
   autoCreate: true
 });
@@ -35,3 +40,4 @@ userSchema.plugin(uniqueValidator);
 var User = mongoose.model('user', userSchema);
 
 module.exports = User;
+ 

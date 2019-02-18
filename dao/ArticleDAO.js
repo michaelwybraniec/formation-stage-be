@@ -58,7 +58,15 @@ function updateLikersIds(articleId, likerIds, successCallback, errorCallback) {
         if (err) return errorCallback();
         return successCallback();
     });
-}
+};
+
+
+function updatePoopsIds(articleId, poopsIds, successCallback, errorCallback) {
+    Article.update({ _id: articleId }, { poopsIds: poopsIds }, function (err) {
+        if (err) return errorCallback();
+        return successCallback();
+    });
+};
 
 
 
@@ -67,5 +75,6 @@ module.exports = {
     getByUserId: getByUserId,
     save: save,
     getOneById: getOneById,
-    updateLikersIds: updateLikersIds
+    updateLikersIds: updateLikersIds,
+    updatePoopsIds: updatePoopsIds
 };

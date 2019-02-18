@@ -30,17 +30,13 @@
     .bg {
         /* The image used */
         background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg");
-
         /* Half height */
         height: 50%;
-
         /* Center and scale the image nicely */
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
-
-
 
     .likeNumber {
         margin-left: 1px;
@@ -49,11 +45,17 @@
 
     .likeButton {
         height: 12px;
-        width: 15px;
+        width: 12px;
         margin-bottom: 3px;
         margin-left: 5px;
     }
 
+    .poopButton {
+        height: 13px;
+        width: 13px;
+        margin-bottom: 1px;
+        margin-left: 5px;
+    }
 
     .circle {
         height: 10px;
@@ -72,7 +74,6 @@
         margin-right: 5px;
         /* margin-left: 5px; */
     }
-
 
     .logout {
         width: 12px;
@@ -104,29 +105,11 @@
         background-image: -moz-linear-gradient(left, rgb(219, 219, 219), transparent);
         background-image: -o-linear-gradient(left, rgb(216, 216, 216), transparent);
     }
-
-  
-
-
-  } 
-}
 </style>
 
 <body>
-  
+
     <div class="container mt-3">
-
-            <div class="bird-container">
-                    <div class="bird"></div>
-                  </div>
-
-
-
-        <!-- ////////////////////////////////////////// Individual articles -->
-        <!-- <div class="d-none d-md-block col-4">
-                    <p class="font-weight-light" id="get-content-result-individual"></p>
-                </div> -->
-
         <!-- //////////////////////////////////////////// logo  -->
         <div class="col-12 col-sm-2 mb-2 mx-auto text-center">
             <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
@@ -149,61 +132,64 @@
             </div>
             <div class="col-12 col-sm-8 col-md-9 mb-2 mx-auto">
                 <!-- //////////////////////////////////////////// Input and submit -->
-                <input type="text" id="post-content-input" rows="6" class="form-control text-center" placeholder="new message... "></input>
+                <input type="text" id="post-content-input" rows="6" class="form-control text-center"
+                    placeholder="new message... "></input>
             </div>
             <div class="col-12 col-sm-4 col-md-3 mb-2 mx-auto">
-                <button onclick="postArticle()" class="btn btn-dark btn-block">Post</button>
+                <button onclick="postArticle()" id="myBtn" class="btn btn-dark btn-block">Post</button>
             </div>
         </div>
         <div class="row">
             <div class="col-12 col-sm-8 col-md-9">
                 <!-- ////////////////////////////////////////// All articles -->
                 <p class="font-weight-normal" id="get-content-result-all"></p>
-
                 <!-- //////////////////////////////////////////////  Users online -->
             </div>
-
             <div class="col-12 col-sm-4 col-md-3 mx-auto">
-                <small>ONLINE:</small>
-                <div id="users-online-color" class="userOnlineColor"></div>
-                <small id="userOnlineName" class="welcomeName"></small>
-
+                <small><small>ONLINE:</small>
+                    <div class='sep'></div>
+                </small>
+                <!-- <div id="users-online-color" class="userOnlineColor"></div>
+                <small id="userOnlineName" class="welcomeName"></small> -->
+                <small id="usersOnline" class="welcomeName"></small>
             </div>
-
-
         </div>
-
     </div>
 </body>
 
 <script>
 
-    function getColor4usersOnline() {
-        axios.get('/user/color')
+    var input = document.getElementById("post-content-input");
+    input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("myBtn").click();
+        }
+    });
+
+
+    function getConectedUsers() {
+        axios.get('/user/connected')
             .then(function (response) {
-                var element = document.getElementById("users-online-color");
-                element.style.backgroundColor = response.data;
+
+                document.getElementById("usersOnline").innerHTML = "";
+
+                for (var i = response.data.length - 1; i >= 0; i--) {
+                    var onlineName = response.data[i].username;
+                    var color = response.data[i].color;
+
+                    var result = "<div class='circle' style='background-color:"
+                        + color + "'></div><small><b>" + "<b>"
+                        + onlineName + "</b></small><div class='sep'></div>";
+
+                    document.getElementById("usersOnline").innerHTML += result;
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
-    getColor4usersOnline();
-
-
-    function getUserNameForOnlineBar() {
-        axios.get('/user')
-            .then(function (response) {
-                document.getElementById("userOnlineName").innerHTML += response.data.username;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
-    getUserNameForOnlineBar();
-
-
-
+    setInterval(function () { getConectedUsers() }, 1000);
 
 
     function getColor() {
@@ -218,6 +204,7 @@
     };
     getColor();
 
+
     function getUserNameForTheTitle() {
         axios.get('/user')
             .then(function (response) {
@@ -230,9 +217,6 @@
     getUserNameForTheTitle();
 
 
-
-
-
     function like(articleId) {
         var link = "/articles/like/" + articleId;
 
@@ -242,12 +226,30 @@
 
                 // Refresh the articles on the page
                 getAllArticles();
-                getUserArticles();
+                // getUserArticles();
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
+
+
+    function poop(articleId) {
+        var link = "/articles/poop/" + articleId;
+
+        axios.get(link)
+            .then(function (response) {
+                if (!response.data) return;
+
+                // Refresh the articles on the page
+                getAllArticles();
+                // getUserArticles();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
 
     function displayArticles(articles, articlesLocation) {
         document.getElementById(articlesLocation).innerHTML = "";
@@ -258,8 +260,12 @@
             var color = articleOwner.color;
             var userName = articleOwner.username;
             var articleId = articles[i]._id;
+
             var likes = 0;
             if (articles[i].likersIds) likes = articles[i].likersIds.length;
+
+            var poops = 0;
+            if (articles[i].poopsIds) poops = articles[i].poopsIds.length;
 
             var result = "<small>" +
                 "<small>" + date + "</small>"
@@ -268,16 +274,14 @@
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
                 + content + "<span onclick=\"like('" + articleId + "')\">"
-                + " <img src='https://requestreduce.org/images/facebook-like-button-clipart-11.jpg' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>"
+                + " <img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>"
+                + "<span onclick=\"poop('" + articleId + "')\">"
+                + " <img src='/images/poop-icon-png-24.jpg' class='poopButton'><span class='poopNumber'>" + poops + "</span></span>"
                 + "</small><div class='sep'></div>";
+
             document.getElementById(articlesLocation).innerHTML += result;
         }
     };
-
-
-
-
-
 
 
     function getAllArticles() {
@@ -290,20 +294,20 @@
                 console.log(error);
             });
     };
-    getAllArticles();
+    setInterval(function () { getAllArticles() }, 1000);
 
 
-    function getUserArticles() {
-        axios.get('/articles/user')
-            .then(function (response) {
-                if (!response.data) return;
-                return displayArticles(response.data, "get-content-result-individual");
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
-    getUserArticles();
+    // function getUserArticles() {
+    //     axios.get('/articles/user')
+    //         .then(function (response) {
+    //             if (!response.data) return;
+    //             return displayArticles(response.data, "get-content-result-individual");
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // };
+    // getUserArticles();
 
 
     function postArticle() {
@@ -315,7 +319,7 @@
             .then(function (response) {
                 // Refresh the articles on the page
                 getAllArticles();
-                getUserArticles();
+                // getUserArticles();
 
                 // Empty input 
                 document.getElementById("post-content-input").value = "";
@@ -324,11 +328,6 @@
                 console.log(error);
             });
     };
-
-    // function logout() {
-    //     axios.get("/logout");
-    // };
-
 
 
 </script>

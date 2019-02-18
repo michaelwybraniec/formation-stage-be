@@ -25,10 +25,18 @@ router.get('/like/:articleId', function (req, res, next) {
     if(!article.likersIds){
       article.likersIds = [];
     }
+
     // The article has some likes already
     else{
       for (var i = 0; i < article.likersIds.length; i++) {
-        if (article.likersIds[i].toString() === req.user._id.toString()) return res.sendStatus(500);
+        if (article.likersIds[i].toString() === req.user._id.toString()) {
+
+          article.likersIds.splice(i, 1);
+          return ArticleDAO.updateLikersIds(article._id, article.likersIds, successCallback, errorCallback);
+          
+         
+          // return res.sendStatus(500);
+        }
       }
     }
 
@@ -40,8 +48,45 @@ router.get('/like/:articleId', function (req, res, next) {
   };
 
   ArticleDAO.getOneById(req.params.articleId, updateLikesCallback, errorCallback);
-
 });
+
+
+
+
+router.get('/poop/:articleId', function (req, res, next) {
+  var errorCallback = function () { return res.sendStatus(500); };
+  var successCallback = function () { return res.sendStatus(200); };
+
+  var updatePoopCallback = function (article) { 
+    // Article never ever had any like before
+    if(!article.poopsIds){
+      article.poopsIds = [];
+    }
+
+    // The article has some likes already
+    else{
+      for (var i = 0; i < article.poopsIds.length; i++) {
+        if (article.poopsIds[i].toString() === req.user._id.toString()) {
+
+          article.poopsIds.splice(i, 1);
+          return ArticleDAO.updatePoopsIds(article._id, article.poopsIds, successCallback, errorCallback);
+          
+         
+          // return res.sendStatus(500);
+        }
+      }
+    }
+
+    // Add the user to the likers
+    article.poopsIds.push(req.user._id);
+
+    // Update in DB
+    ArticleDAO.updatePoopsIds(article._id, article.poopsIds, successCallback, errorCallback);
+  };
+  
+  ArticleDAO.getOneById(req.params.articleId, updatePoopCallback, errorCallback);
+});
+
 
 
 router.get('/all', function (req, res, next) {

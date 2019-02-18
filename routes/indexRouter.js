@@ -23,8 +23,14 @@ router.get('/registration', function (req, res, next) {
 /** ======================== DATA ============================ */
 
 router.get('/logout', function (req, res, next) {
+  
+  var errorCallback = function () { return res.sendStatus(500); };
+  var successCallback = function() {
   req.logout();
   res.redirect("/");
+  };
+
+  UserDAO.updateStatusOnline(req.user._id, false, successCallback, errorCallback);
 });
 
 
@@ -40,8 +46,9 @@ router.post('/registration', function (req, res, next) {
 // ==== Login and Authenticate
 router.post('/login', function (req, res, next) {
   var errorCallback = function () { return res.sendStatus(500); };
-  var successCallback = function (user) {
+  var successCallback = function () { return res.sendStatus(200); };
 
+  var logUserIn = function (user) {
     // If user does not exist or passwords don't match, return error
     if (!user || user.password !== req.body.password) {
       return res.sendStatus(500);
@@ -51,13 +58,21 @@ router.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
       req.logIn(user, function (err) {
         if (err) return next(err);
-        return res.sendStatus(200);
+
+        UserDAO.updateStatusOnline(user._id, true, successCallback, errorCallback);
       });
     })(req, res, next);
-  };
-  
-  UserDAO.find(req.body.username, successCallback, errorCallback);
+    
+  }; 
+
+  UserDAO.find(req.body.username, logUserIn, errorCallback);
 });
+
+
+
+
+
+
 
 
 
