@@ -30,23 +30,41 @@ router.get('/connected', function (req, res, next) {
   var getConnectedUserCallback = function (usersConnected) {
     var getArticlesCallback = function (articles) {
       var modifiedUsers = [];
+
       for (var i = 0; i < usersConnected.length; i++) {
         var user = usersConnected[i].toJSON();
-        var countPoops = 0;    
+
+        var countPoops = 0;
+        var countLikes = 0;
+
         for (var j = 0; j < articles.length; j++) {
           var article = articles[j];
           if (article.ownerId.toString() === user._id.toString()) {
-            if(article.poopsIds) countPoops += article.poopsIds.length;
-          }     
-        }    
+            if (article.poopsIds) countPoops += article.poopsIds.length;
+          }
+        }
         user.poopsCount = countPoops;
-        modifiedUsers.push(user);  
-      };     
-    return res.send(modifiedUsers);
+
+        for (var k = 0; k < articles.length; k++) {
+          var article = articles[k];
+          if (article.ownerId.toString() === user._id.toString()) {
+            if (article.likersIds) countLikes += article.likersIds.length;
+          }
+        }
+        user.likesCount = countLikes;
+
+
+
+        modifiedUsers.push(user);
+
+      };
+
+
+      return res.send(modifiedUsers);
+    };
+    ArticleDAO.getAll(getArticlesCallback, errorCallback);
   };
-  ArticleDAO.getAll(getArticlesCallback, errorCallback);
-};
-UserDAO.getConnectedUsers(true, getConnectedUserCallback, errorCallback);
+  UserDAO.getConnectedUsers(true, getConnectedUserCallback, errorCallback);
 });
 
 

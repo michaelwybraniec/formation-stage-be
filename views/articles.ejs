@@ -175,11 +175,13 @@
 
                 document.getElementById("usersOnline").innerHTML = "";
 
-                // console.log(response.data);
+                console.log(response.data);
                 for (var i = response.data.length - 1; i >= 0; i--) {
                     var onlineName = response.data[i].username;
                     var color = response.data[i].color;
+                    var likes = response.data[i].likesCount
                     var poops = response.data[i].poopsCount
+                   
 
                     // The biggest pooper.
                     // var poopStat = []                   
@@ -190,7 +192,8 @@
                     var result = "<div class='circle' style='background-color:"
                         + color + "'></div><small><b>" + "<b>"
                         + onlineName + "</b>"
-                        + "<img src='/images/poop-icon-png-24.jpg' class='poopButton'><span class='poopNumber'>" + poops + "</small><div class='sep'></div>";
+                        + "<img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'> " + likes
+                        + "<img src='/images/poop-icon-png-24.jpg' class='poopButton'>" + poops + "</small><div class='sep'></div>";
 
                     document.getElementById("usersOnline").innerHTML += result;
                 }
