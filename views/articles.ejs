@@ -168,28 +168,40 @@
     });
 
 
-    function getConectedUsers() {
+
+    function getConnectedUsers() {
         axios.get('/user/connected')
             .then(function (response) {
 
                 document.getElementById("usersOnline").innerHTML = "";
 
+                // console.log(response.data);
                 for (var i = response.data.length - 1; i >= 0; i--) {
                     var onlineName = response.data[i].username;
                     var color = response.data[i].color;
+                    var poops = response.data[i].poopsCount
+
+                    // The biggest pooper.
+                    // var poopStat = []                   
+                    // poopStat = {"name": onlineName,"color": color,"poops": poops};
+                    // console.log(poopStat);
+                    
 
                     var result = "<div class='circle' style='background-color:"
                         + color + "'></div><small><b>" + "<b>"
-                        + onlineName + "</b></small><div class='sep'></div>";
+                        + onlineName + "</b>"
+                        + "<img src='/images/poop-icon-png-24.jpg' class='poopButton'><span class='poopNumber'>" + poops + "</small><div class='sep'></div>";
 
                     document.getElementById("usersOnline").innerHTML += result;
                 }
+                
+                setTimeout(getConnectedUsers, 1000);
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
-    setInterval(function () { getConectedUsers() }, 1000);
+    getConnectedUsers();
 
 
     function getColor() {
@@ -203,6 +215,7 @@
             });
     };
     getColor();
+
 
 
     function getUserNameForTheTitle() {
@@ -284,9 +297,11 @@
     };
 
 
-    function getAllArticles() {
+    function getAllArticles(retrigger) {
         axios.get("/articles/all")
             .then(function (response) {
+                if(retrigger) setTimeout(function(){getAllArticles(true)}, 1000);
+
                 if (!response.data) return;
                 return displayArticles(response.data, "get-content-result-all");
             })
@@ -294,7 +309,7 @@
                 console.log(error);
             });
     };
-    setInterval(function () { getAllArticles() }, 1000);
+    getAllArticles(true);
 
 
     // function getUserArticles() {

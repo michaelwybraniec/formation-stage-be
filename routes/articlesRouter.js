@@ -71,7 +71,7 @@ router.get('/poop/:articleId', function (req, res, next) {
           article.poopsIds.splice(i, 1);
           return ArticleDAO.updatePoopsIds(article._id, article.poopsIds, successCallback, errorCallback);
           
-         
+
           // return res.sendStatus(500);
         }
       }
