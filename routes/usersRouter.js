@@ -41,20 +41,12 @@ router.get('/connected', function (req, res, next) {
           var article = articles[j];
           if (article.ownerId.toString() === user._id.toString()) {
             if (article.poopsIds) countPoops += article.poopsIds.length;
-          }
-        }
-        user.poopsCount = countPoops;
-
-        for (var k = 0; k < articles.length; k++) {
-          var article = articles[k];
-          if (article.ownerId.toString() === user._id.toString()) {
             if (article.likersIds) countLikes += article.likersIds.length;
           }
         }
+        user.poopsCount = countPoops;
         user.likesCount = countLikes;
-
-
-
+        
         modifiedUsers.push(user);
 
       };

@@ -16,6 +16,15 @@ router.get('/', function (req, res, next) {
 
 /** ======================== DATA ============================ */
 
+router.get('/delete/:articleId', function (req, res, next) {
+  var errorCallback = function () { return res.sendStatus(500); };
+  var successCallback = function () { return res.sendStatus(200); };
+
+  
+});
+
+
+
 router.get('/like/:articleId', function (req, res, next) {
   var errorCallback = function () { return res.sendStatus(500); };
   var successCallback = function () { return res.sendStatus(200); };
@@ -49,6 +58,7 @@ router.get('/like/:articleId', function (req, res, next) {
 
   ArticleDAO.getOneById(req.params.articleId, updateLikesCallback, errorCallback);
 });
+
 
 
 

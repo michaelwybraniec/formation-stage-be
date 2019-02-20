@@ -44,18 +44,56 @@
     }
 
     .likeButton {
-        height: 12px;
-        width: 12px;
+        height: 10px;
+        width: 10px;
         margin-bottom: 3px;
         margin-left: 5px;
     }
 
-    .poopButton {
-        height: 13px;
+
+    .likeButtonStat {
+        height: 15px;
+        width: 15px;
+        margin-bottom: 3px;
+        margin-left: 1px;
+    }
+
+    .poopButtonStat {
+        height: 18px;
+        width: 18px;
+        margin-bottom: 1px;
+        /* margin-left: 4px; */
+        /* margin-right: 1px; */
+
+    }
+
+
+
+    .deleteButton {
+        height: 12px;
         width: 13px;
+        margin-bottom: 3px;
+        margin-left: 4px;
+    }
+
+    .editButton {
+        height: 8px;
+        width: 8px;
+        margin-bottom: 3px;
+        margin-left: 12px;
+        margin-right: 6px;
+
+    }
+
+    .poopButton {
+        height: 11px;
+        width: 11px;
         margin-bottom: 1px;
         margin-left: 5px;
     }
+
+
+
 
     .circle {
         height: 10px;
@@ -65,6 +103,18 @@
         margin-right: 5px;
         margin-left: 5px;
     }
+
+
+    .circleStats {
+        height: 10px;
+        width: 10px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-right: 5px;
+        /* margin-left: 5px; */
+    }
+
+
 
     .userOnlineColor {
         height: 10px;
@@ -94,21 +144,30 @@
 
     .welcomeName {
         font-weight: bold;
+        display: inline-block;
+        text-align: left;
+    }
+
+    .likesAndPoopsNumber {
+        font-weight: bold;
+        display: inline-block;
+        /* margin: auto; */
+        text-align: center;
     }
 
     .sep {
         /* border-top: 1px solid rgb(240, 240, 240); */
         right: -50px;
         height: 1px;
-        background-image: -webkit-gradient(linear, 0 0, 100% 0, from(rgb(150, 150, 150)), to(transparent));
-        background-image: -webkit-linear-gradient(left, rgb(206, 206, 206), transparent);
-        background-image: -moz-linear-gradient(left, rgb(219, 219, 219), transparent);
-        background-image: -o-linear-gradient(left, rgb(216, 216, 216), transparent);
+
+        background-image: -webkit-gradient(linear, 0 0, 100% 0, from(rgb(192, 192, 192)), to(transparent));
+        background-image: -webkit-linear-gradient(right, rgb(233, 233, 233), transparent);
+        background-image: -moz-linear-gradient(left, rgb(243, 243, 243), transparent);
+        background-image: -o-linear-gradient(left, rgb(243, 243, 243), transparent);
     }
 </style>
 
 <body>
-
     <div class="container mt-3">
         <!-- //////////////////////////////////////////// logo  -->
         <div class="col-12 col-sm-2 mb-2 mx-auto text-center">
@@ -146,18 +205,40 @@
                 <!-- //////////////////////////////////////////////  Users online -->
             </div>
             <div class="col-12 col-sm-4 col-md-3 mx-auto">
-                <small><small>ONLINE:</small>
-                    <div class='sep'></div>
-                </small>
-                <!-- <div id="users-online-color" class="userOnlineColor"></div>
-                <small id="userOnlineName" class="welcomeName"></small> -->
-                <small id="usersOnline" class="welcomeName"></small>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">                       
+                            <div class="col-8 col-sm-7 mx-auto">   
+                                <span><small><small>ONLINE:</small></span></small>
+                            </div>
+                            <div class="col-4 col-sm-5 mx-auto text-center">
+                                <img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png'
+                                    class='likeButtonStat'>
+                                <img src='/images/poop-icon-png-24.jpg' class='poopButtonStat'>
+                            </div>     
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-8 col-sm-7 mx-auto">
+                                <small id="usersOnline" class="welcomeName"></small>
+                            </div>
+                            <div class="col-4 col-sm-5 mx-auto text-center">
+                                <small id="likesAndPoopsOnline" class="likesAndPoopsNumber"></small>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
 
 <script>
+
+    var user = null;
+
 
     var input = document.getElementById("post-content-input");
     input.addEventListener("keyup", function (event) {
@@ -168,36 +249,37 @@
     });
 
 
-
     function getConnectedUsers() {
         axios.get('/user/connected')
             .then(function (response) {
 
                 document.getElementById("usersOnline").innerHTML = "";
+                document.getElementById("likesAndPoopsOnline").innerHTML = "";
 
-                console.log(response.data);
+                // console.log(response.data);
                 for (var i = response.data.length - 1; i >= 0; i--) {
                     var onlineName = response.data[i].username;
                     var color = response.data[i].color;
                     var likes = response.data[i].likesCount
                     var poops = response.data[i].poopsCount
-                   
 
                     // The biggest pooper.
                     // var poopStat = []                   
                     // poopStat = {"name": onlineName,"color": color,"poops": poops};
                     // console.log(poopStat);
-                    
 
-                    var result = "<div class='circle' style='background-color:"
+                    var likesAndPoops = "<small>" + likes + " - " + poops + "     "
+                        + "</small><div class='sep'></div>";
+                    document.getElementById("likesAndPoopsOnline").innerHTML += likesAndPoops;
+
+                    var colorAndName = "<div class='circleStats' style='background-color:"
                         + color + "'></div><small><b>" + "<b>"
                         + onlineName + "</b>"
-                        + "<img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'> " + likes
-                        + "<img src='/images/poop-icon-png-24.jpg' class='poopButton'>" + poops + "</small><div class='sep'></div>";
+                        + "</small><div class='sep'></div>";
 
-                    document.getElementById("usersOnline").innerHTML += result;
+                    document.getElementById("usersOnline").innerHTML += colorAndName;
                 }
-                
+
                 setTimeout(getConnectedUsers, 1000);
             })
             .catch(function (error) {
@@ -218,7 +300,6 @@
             });
     };
     getColor();
-
 
 
     function getUserNameForTheTitle() {
@@ -267,6 +348,60 @@
     };
 
 
+    function delete(articleId) {
+        var link = "/articles/delete/" + articleId;
+
+        axios.get(link)
+            .then(function (response) {
+                if (!response.data) return;
+
+                // Refresh the articles on the page
+                getAllArticles();
+                // getUserArticles();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+
+
+
+
+    // function displayArticles(articles, articlesLocation) {
+    //     document.getElementById(articlesLocation).innerHTML = "";
+    //     for (var i = articles.length - 1; i >= 0; i--) {
+    //         var articleOwner = articles[i].articleOwner;
+    //         var date = new Date(articles[i].datePosted).toLocaleString();
+    //         var content = articles[i].content;
+    //         var color = articleOwner.color;
+    //         var userName = articleOwner.username;
+    //         var articleId = articles[i]._id;
+
+    //         var likes = 0;
+    //         if (articles[i].likersIds) likes = articles[i].likersIds.length;
+
+    //         var poops = 0;
+    //         if (articles[i].poopsIds) poops = articles[i].poopsIds.length;
+
+    //         var result = "<small>" +
+    //             "<small>" + date + "</small>"
+    //             // + "<span class='likeNumber'>" + likes + "</span>"
+    //             + "<div class='circle' style='background-color:"
+    //             + color + "'></div><small><b>"
+    //             + userName + "</b>: </small>"
+    //             + content + "<span onclick=\"like('" + articleId + "')\">"
+    //             + " <img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>"
+    //             + "<span onclick=\"poop('" + articleId + "')\">"
+    //             + " <img src='/images/poop-icon-png-24.jpg' class='poopButton'><span class='poopNumber'>" + poops + "</span></span>"
+    //             + "</small><div class='sep'></div>";
+
+    //         document.getElementById(articlesLocation).innerHTML += result;
+    //     }
+    // };
+
+
+
     function displayArticles(articles, articlesLocation) {
         document.getElementById(articlesLocation).innerHTML = "";
         for (var i = articles.length - 1; i >= 0; i--) {
@@ -283,16 +418,30 @@
             var poops = 0;
             if (articles[i].poopsIds) poops = articles[i].poopsIds.length;
 
-            var result = "<small>" +
-                "<small>" + date + "</small>"
+            var deleteBtn = "";
+            if (user && user._id === articles[i].ownerId) deleteBtn = "<span onclick=\"delete('" + articleId + "')\"><img src='https://www.freeiconspng.com/uploads/black-x-png-27.png' class='deleteButton'></span></span>";
+
+            var editButton = "";
+            if (user && user._id === articles[i].ownerId) editButton = "<span onclick=\"edit('" + articleId + "')\"><img src='http://www.clker.com/cliparts/Q/e/P/J/C/t/pencil-md.png' class='editButton'></span></span>";
+
+            var likeButton = "";
+            if (user && user._id !== articles[i].ownerId) likeButton = "<span onclick=\"like('" + articleId + "')\"><img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>";
+
+            var poopButton = "";
+            if (user && user._id !== articles[i].ownerId) poopButton = "<span onclick=\"poop('" + articleId + "')\"><img src='/images/poop-icon-png-24.jpg' class='poopButton'><span class='poopNumber'>" + poops + "</span></span>";
+
+
+            var result = "<small>"
+                + "<small>" + deleteBtn + editButton + likeButton + poopButton
+
+                // + date
+                + "</small>"
                 // + "<span class='likeNumber'>" + likes + "</span>"
                 + "<div class='circle' style='background-color:"
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
-                + content + "<span onclick=\"like('" + articleId + "')\">"
-                + " <img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>"
-                + "<span onclick=\"poop('" + articleId + "')\">"
-                + " <img src='/images/poop-icon-png-24.jpg' class='poopButton'><span class='poopNumber'>" + poops + "</span></span>"
+                + content
+
                 + "</small><div class='sep'></div>";
 
             document.getElementById(articlesLocation).innerHTML += result;
@@ -300,22 +449,42 @@
     };
 
 
-    function getAllArticles(retrigger) {
-        axios.get("/articles/all")
-            .then(function (response) {
-                if(retrigger) setTimeout(function(){getAllArticles(true)}, 1000);
 
-                if (!response.data) return;
-                return displayArticles(response.data, "get-content-result-all");
+    function getUser() {
+        axios.get('/user')
+            .then(function (response) {
+                user = response.data
+                return response.data;
+                // document.getElementById("welcome-name").innerHTML += response.data.username;
+                // console.log(response.data)
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
-    getAllArticles(true);
+    getUser();
 
 
-    // function getUserArticles() {
+
+
+
+    function getUserArticles() {
+        axios.get('/articles/user')
+            .then(function (response) {
+                if (!response.data) return;
+                var data = response.data
+                // console.log("userArticles")
+                // console.log(data);
+                return data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+    getUserArticles();
+
+
+    // function getUserArticlesAndFetchInHTML() {
     //     axios.get('/articles/user')
     //         .then(function (response) {
     //             if (!response.data) return;
@@ -325,7 +494,25 @@
     //             console.log(error);
     //         });
     // };
-    // getUserArticles();
+    // getUserArticlesAndFetchInHTML();
+
+
+    function getAllArticles(retrigger) {
+        axios.get("/articles/all")
+            .then(function (response) {
+                if (retrigger) setTimeout(function () { getAllArticles(true) }, 1000);
+
+                if (!response.data) return;
+                // console.log(response.data);
+                return displayArticles(response.data, "get-content-result-all");
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+    getAllArticles(true);
+
+
 
 
     function postArticle() {
