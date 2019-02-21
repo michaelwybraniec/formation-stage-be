@@ -20,7 +20,10 @@ router.get('/delete/:articleId', function (req, res, next) {
   var errorCallback = function () { return res.sendStatus(500); };
   var successCallback = function () { return res.sendStatus(200); };
 
-  
+
+  console.log("articleId : " + req.params.articleId);
+ArticleDAO.deleteById(req.params.articleId, req.user._id, successCallback, errorCallback);
+
 });
 
 

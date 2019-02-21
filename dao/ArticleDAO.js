@@ -69,6 +69,15 @@ function updatePoopsIds(articleId, poopsIds, successCallback, errorCallback) {
 };
 
 
+function deleteById(articleId, ownerId, successCallback, errorCallback) {
+
+    Article.remove({ _id: articleId, ownerId: ownerId  }, function (err) {
+        if (err) return errorCallback();
+        return successCallback();
+
+    });
+};
+
 
 module.exports = {
     getAll: getAll,
@@ -76,5 +85,6 @@ module.exports = {
     save: save,
     getOneById: getOneById,
     updateLikersIds: updateLikersIds,
-    updatePoopsIds: updatePoopsIds
+    updatePoopsIds: updatePoopsIds,
+    deleteById: deleteById
 };

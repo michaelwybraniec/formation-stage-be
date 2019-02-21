@@ -29,11 +29,11 @@
 
     .bg {
         /* The image used */
-        background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg");
+        /* background-image: url("https://visionshare.org/wp-content/uploads/alpha-bg.png"); */
         /* Half height */
-        height: 50%;
+        height: 10%;
         /* Center and scale the image nicely */
-        background-position: center;
+        background-position: bottom;
         background-repeat: no-repeat;
         background-size: cover;
     }
@@ -207,15 +207,15 @@
             <div class="col-12 col-sm-4 col-md-3 mx-auto">
                 <div class="row">
                     <div class="col-12">
-                        <div class="row">                       
-                            <div class="col-8 col-sm-7 mx-auto">   
+                        <div class="row">
+                            <div class="col-8 col-sm-7 mx-auto">
                                 <span><small><small>ONLINE:</small></span></small>
                             </div>
                             <div class="col-4 col-sm-5 mx-auto text-center">
                                 <img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png'
                                     class='likeButtonStat'>
                                 <img src='/images/poop-icon-png-24.jpg' class='poopButtonStat'>
-                            </div>     
+                            </div>
                         </div>
                     </div>
                     <div class="col-12">
@@ -233,7 +233,52 @@
             </div>
         </div>
     </div>
+
+
+    <div id="modal-window"></div>
+
+    <!-- <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="" data-whatever="@getbootstrap">Open modal for @getbootstrap</button> -->
+
+    <!-- <div class="modal fade" id="exampleModal" role="dialog">
+
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h7 class="modal-title"><small>Edit:</small></h7> 
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+
+              </div>
+              <div class="form-group">
+
+                <textarea class="form-control" id="edit-message-text">
+                    
+                    <div id="modal-value"></div>
+                
+                </textarea>
+
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-sm btn-dark">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
+
 </body>
+
+
+
 
 <script>
 
@@ -348,7 +393,7 @@
     };
 
 
-    function delete(articleId) {
+    function deleteById(articleId) {
         var link = "/articles/delete/" + articleId;
 
         axios.get(link)
@@ -363,7 +408,6 @@
                 console.log(error);
             });
     };
-
 
 
 
@@ -408,6 +452,8 @@
             var articleOwner = articles[i].articleOwner;
             var date = new Date(articles[i].datePosted).toLocaleString();
             var content = articles[i].content;
+            var contentToEdit = articles[i].content;
+
             var color = articleOwner.color;
             var userName = articleOwner.username;
             var articleId = articles[i]._id;
@@ -419,10 +465,16 @@
             if (articles[i].poopsIds) poops = articles[i].poopsIds.length;
 
             var deleteBtn = "";
-            if (user && user._id === articles[i].ownerId) deleteBtn = "<span onclick=\"delete('" + articleId + "')\"><img src='https://www.freeiconspng.com/uploads/black-x-png-27.png' class='deleteButton'></span></span>";
+            if (user && user._id === articles[i].ownerId) deleteBtn = "<span onclick=\"deleteById('" + articleId + "')\"><img src='https://www.freeiconspng.com/uploads/black-x-png-27.png' class='deleteButton'></span></span>";
 
+            // var editButton = "";
+            // if (user && user._id === articles[i].ownerId) editButton = "<span onclick=\"edit('" + articleId + "')\"><img src='http://www.clker.com/cliparts/Q/e/P/J/C/t/pencil-md.png' class='editButton'></span></span>";
+
+
+
+            
             var editButton = "";
-            if (user && user._id === articles[i].ownerId) editButton = "<span onclick=\"edit('" + articleId + "')\"><img src='http://www.clker.com/cliparts/Q/e/P/J/C/t/pencil-md.png' class='editButton'></span></span>";
+            if (user && user._id === articles[i].ownerId) editButton = "<span data-target=\"#exampleModal\" data-toggle=\"modal\"><img src='http://www.clker.com/cliparts/Q/e/P/J/C/t/pencil-md.png' class='editButton'></span></span>";
 
             var likeButton = "";
             if (user && user._id !== articles[i].ownerId) likeButton = "<span onclick=\"like('" + articleId + "')\"><img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>";
@@ -432,21 +484,63 @@
 
 
             var result = "<small>"
-                + "<small>" + deleteBtn + editButton + likeButton + poopButton
-
+                + "<small>" + deleteBtn + PassThePostToEdit(contentToEdit, editButton) + likeButton + poopButton
                 // + date
                 + "</small>"
-                // + "<span class='likeNumber'>" + likes + "</span>"
                 + "<div class='circle' style='background-color:"
                 + color + "'></div><small><b>"
                 + userName + "</b>: </small>"
                 + content
-
                 + "</small><div class='sep'></div>";
 
             document.getElementById(articlesLocation).innerHTML += result;
         }
     };
+
+
+
+    function PassThePostToEdit(currentContent, button) {
+
+var modalData =
+    `<div class="modal fade" id="exampleModal" role="dialog">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header">
+    <h7 class="modal-title"><small>Edit:</small></h7>                               
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+    <form>
+        <div class="form-group">
+        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label>
+        <input type="text" class="form-control" id="recipient-name"> -->
+        </div>
+        <div class="form-group">
+        <!-- <label for="message-text" class="col-form-label"><small>message time:</small></label> -->
+        <textarea class="form-control" id="edit-message-text">`+ currentContent +`</textarea>
+        </div>
+    </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-sm btn-dark">Confirm</button>
+    </div>
+</div>
+</div>
+</div>
+`;
+
+document.getElementById("modal-window").innerHTML = modalData;
+// document.getElementById("modal-value").innerHTML = content;
+
+
+
+return button;
+};
+
+
 
 
 
@@ -463,8 +557,6 @@
             });
     };
     getUser();
-
-
 
 
 
