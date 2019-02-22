@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://raw.githubusercontent.com/daneden/animate.css/master/animate.css"></script>
 </head>
 
 <style>
@@ -27,6 +28,10 @@
         height: 100%;
     }
 
+    #edit-message-text {
+        font: bold;
+    }
+
     .bg {
         /* The image used */
         /* background-image: url("https://visionshare.org/wp-content/uploads/alpha-bg.png"); */
@@ -37,18 +42,79 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+    
 
-    .likeNumber {
-        margin-left: 1px;
+  
 
-    }
 
+
+
+    .likeNumber { margin-left: 1px; }
     .likeButton {
         height: 10px;
         width: 10px;
         margin-bottom: 3px;
         margin-left: 5px;
     }
+    .likeButton:hover {
+        height: 15px;
+        width: 15px;
+        margin-bottom: 3px;
+        margin-left: 2px;    
+    }
+
+
+
+    .deleteButton {
+        height: 12px;
+        width: 13px;
+        margin-bottom: 3px;
+        margin-left: 4px;
+    }
+    .deleteButton:hover {
+        height: 20px;
+        width: 20px;
+        margin-bottom: 3px;
+        margin-left: 1px;
+    }
+
+
+
+
+    .editButton {
+        height: 8px;
+        width: 8px;
+        margin-bottom: 3px;
+        margin-left: 12px;
+        margin-right: 6px;
+
+    }
+    .editButton:hover {
+        height: 15px;
+        width: 15px;
+        margin-bottom: 3px;
+        margin-left: 8px;
+        margin-right: 6px;
+
+    }
+
+
+
+    .poopButton {
+        height: 11px;
+        width: 11px;
+        margin-bottom: 1px;
+        margin-left: 5px;
+    }
+    .poopButton:hover {
+        height: 18px;
+        width: 18px;
+        margin-bottom: 1px;
+        margin-left: 2px;
+    }
+
+
+
 
 
     .likeButtonStat {
@@ -68,29 +134,6 @@
     }
 
 
-
-    .deleteButton {
-        height: 12px;
-        width: 13px;
-        margin-bottom: 3px;
-        margin-left: 4px;
-    }
-
-    .editButton {
-        height: 8px;
-        width: 8px;
-        margin-bottom: 3px;
-        margin-left: 12px;
-        margin-right: 6px;
-
-    }
-
-    .poopButton {
-        height: 11px;
-        width: 11px;
-        margin-bottom: 1px;
-        margin-left: 5px;
-    }
 
 
 
@@ -116,6 +159,7 @@
 
 
 
+
     .userOnlineColor {
         height: 10px;
         width: 10px;
@@ -125,21 +169,28 @@
         /* margin-left: 5px; */
     }
 
+
     .logout {
         width: 12px;
         /* border-radius: 50px; */
         /* float: center; */
-        display: inline-block;
+        /* display: inline-block; */
         margin-bottom: 2px;
         /* margin-left: 1px; */
         /* margin-right: 2px; */
     }
+ 
+
+
+
 
     .logo {
         width: 40px;
         height: 40px;
         margin-bottom: 5px;
         margin: auto;
+        
+        
     }
 
     .welcomeName {
@@ -170,6 +221,9 @@
 <body>
     <div class="container mt-3">
         <!-- //////////////////////////////////////////// logo  -->
+        
+       
+
         <div class="col-12 col-sm-2 mb-2 mx-auto text-center">
             <img src="https://media.licdn.com/dms/image/C4E0BAQGxbiQFQ7a1EA/company-logo_400_400/0?e=1557964800&v=beta&t=OwGqgRsLn89yns4QG1XZYJVnLGqdwkcaPlaKlqzU5Yc
                     " class="logo" alt="logo">
@@ -239,39 +293,39 @@
 
     <!-- <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="" data-whatever="@getbootstrap">Open modal for @getbootstrap</button> -->
 
-    <!-- <div class="modal fade" id="exampleModal" role="dialog">
+    <div class="modal fade" id="exampleModal" role="dialog">
 
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h7 class="modal-title"><small>Edit:</small></h7> 
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h7 class="modal-title"><small>Edit:</small></h7>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
 
-              </div>
-              <div class="form-group">
+                        </div>
+                        <div class="form-group">
 
-                <textarea class="form-control" id="edit-message-text">
-                    
-                    <div id="modal-value"></div>
-                
+                            <textarea class="form-control" id="edit-message-text">
+
+
+
                 </textarea>
 
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-sm btn-dark">Confirm</button>
-          </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Cancel</button>
+                    <span onclick="updateArticle()" class="btn btn-sm btn-dark" data-dismiss="modal">Confirm</span>
+                </div>
+            </div>
         </div>
-      </div>
-    </div> -->
+    </div>
 
 
 
@@ -410,6 +464,73 @@
     };
 
 
+    // function editArticle(articleId) {
+
+    //     var content = document.getElementById("post-content-input").value;
+    //     var data = {
+    //         "content": content
+    //     };
+
+    //     axios.post("/articles/edit", articleId)
+    //         .then(function (response) {
+    //             // Refresh the articles on the page
+    //             // getAllArticles();
+    //             // getUserArticles();
+
+    //             // Empty input 
+    //             document.getElementById("edit-message-text").value = response.data;
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // };
+
+    var articleIdToEdit222 = "";
+
+    function editById(articleId) {
+        var link = "/articles/edit/" + articleId;
+
+        axios.get(link)
+            .then(function (response) {
+                if (!response.data) return;
+
+
+                // console.log(response.data);
+                articleIdToEdit222 = response.data;
+                console.log("_________" + articleIdToEdit222);
+                document.getElementById("edit-message-text").value = response.data.content;
+                // Refresh the articles on the page
+                getAllArticles();
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+
+    function updateArticle() {
+        id = articleIdToEdit222._id
+        var content = document.getElementById("edit-message-text").value;
+        var data = {
+            "articleIdtoEdit": id,
+            "content": content
+        };
+        console.log(data);
+        axios.post("/articles/updateArticle", data)
+            .then(function (response) {
+                // Refresh the articles on the page
+                getAllArticles();
+                // getUserArticles();
+
+                // Empty input 
+                document.getElementById("post-content-input").value = "";
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
 
 
     // function displayArticles(articles, articlesLocation) {
@@ -472,9 +593,14 @@
 
 
 
-            
+
+
+
+
+
+
             var editButton = "";
-            if (user && user._id === articles[i].ownerId) editButton = "<span data-target=\"#exampleModal\" data-toggle=\"modal\"><img src='http://www.clker.com/cliparts/Q/e/P/J/C/t/pencil-md.png' class='editButton'></span></span>";
+            if (user && user._id === articles[i].ownerId) editButton = "<span onclick=\"editById('" + articleId + "')\" data-target=\"#exampleModal\" data-toggle=\"modal\"><img src='http://www.clker.com/cliparts/Q/e/P/J/C/t/pencil-md.png' class='editButton'></span></span>";
 
             var likeButton = "";
             if (user && user._id !== articles[i].ownerId) likeButton = "<span onclick=\"like('" + articleId + "')\"><img src='https://cdn4.iconfinder.com/data/icons/like-18/32/459-01-512.png' class='likeButton'><span class='likeNumber'>" + likes + "</span></span>";
@@ -484,7 +610,7 @@
 
 
             var result = "<small>"
-                + "<small>" + deleteBtn + PassThePostToEdit(contentToEdit, editButton) + likeButton + poopButton
+                + "<small>" + deleteBtn + editButton + likeButton + poopButton
                 // + date
                 + "</small>"
                 + "<div class='circle' style='background-color:"
@@ -499,46 +625,42 @@
 
 
 
-    function PassThePostToEdit(currentContent, button) {
+    // function PassThePostToEdit(currentContent, button) {
+    //     var modalData =
+    //         `<div class="modal fade" id="exampleModal" role="dialog">
+    //     <div class="modal-dialog">
+    //     <div class="modal-content">
+    //         <div class="modal-header">
+    //         <h7 class="modal-title"><small>Edit:</small></h7>                               
+    //         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    //             <span aria-hidden="true">&times;</span>
+    //         </button>
+    //         </div>
+    //         <div class="modal-body">
+    //         <form>
+    //             <div class="form-group">
+    //             <!-- <label for="recipient-name" class="col-form-label">Recipient:</label>
+    //             <input type="text" class="form-control" id="recipient-name"> -->
+    //             </div>
+    //             <div class="form-group">
+    //             <!-- <label for="message-text" class="col-form-label"><small>message time:</small></label> -->
+    //             <textarea class="form-control" id="edit-message-text">`+ currentContent + `</textarea>
+    //             </div>
+    //         </form>
+    //         </div>
+    //         <div class="modal-footer">
+    //         <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Cancel</button>
+    //         <button type="button" class="btn btn-sm btn-dark">Confirm</button>
+    //         </div>
+    //     </div>
+    //     </div>
+    //     </div>
+    //     `;
 
-var modalData =
-    `<div class="modal fade" id="exampleModal" role="dialog">
-<div class="modal-dialog">
-<div class="modal-content">
-    <div class="modal-header">
-    <h7 class="modal-title"><small>Edit:</small></h7>                               
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
-    <div class="modal-body">
-    <form>
-        <div class="form-group">
-        <!-- <label for="recipient-name" class="col-form-label">Recipient:</label>
-        <input type="text" class="form-control" id="recipient-name"> -->
-        </div>
-        <div class="form-group">
-        <!-- <label for="message-text" class="col-form-label"><small>message time:</small></label> -->
-        <textarea class="form-control" id="edit-message-text">`+ currentContent +`</textarea>
-        </div>
-    </form>
-    </div>
-    <div class="modal-footer">
-    <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Cancel</button>
-    <button type="button" class="btn btn-sm btn-dark">Confirm</button>
-    </div>
-</div>
-</div>
-</div>
-`;
+    //     document.getElementById("modal-window").innerHTML = modalData;
 
-document.getElementById("modal-window").innerHTML = modalData;
-// document.getElementById("modal-value").innerHTML = content;
-
-
-
-return button;
-};
+    //     return button;
+    // };
 
 
 
@@ -576,6 +698,7 @@ return button;
     getUserArticles();
 
 
+
     // function getUserArticlesAndFetchInHTML() {
     //     axios.get('/articles/user')
     //         .then(function (response) {
@@ -594,6 +717,7 @@ return button;
             .then(function (response) {
                 if (retrigger) setTimeout(function () { getAllArticles(true) }, 1000);
 
+                // getAllArticles(true)
                 if (!response.data) return;
                 // console.log(response.data);
                 return displayArticles(response.data, "get-content-result-all");
@@ -603,6 +727,7 @@ return button;
             });
     };
     getAllArticles(true);
+    // getAllArticles();
 
 
 
@@ -625,6 +750,9 @@ return button;
                 console.log(error);
             });
     };
+
+
+
 
 
 </script>

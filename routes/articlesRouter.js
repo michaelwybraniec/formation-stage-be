@@ -19,12 +19,31 @@ router.get('/', function (req, res, next) {
 router.get('/delete/:articleId', function (req, res, next) {
   var errorCallback = function () { return res.sendStatus(500); };
   var successCallback = function () { return res.sendStatus(200); };
-
-
-  console.log("articleId : " + req.params.articleId);
-ArticleDAO.deleteById(req.params.articleId, req.user._id, successCallback, errorCallback);
-
+  // console.log("articleId : " + req.params.articleId);
+  ArticleDAO.deleteById(req.params.articleId, req.user._id, successCallback, errorCallback);
 });
+
+
+
+router.get('/edit/:articleId', function (req, res, next) {
+  var errorCallback = function () { return res.sendStatus(200); };
+  var successCallback = function (article) { return res.send(article); };
+  console.log("articleId : " + req.params.articleId);
+  ArticleDAO.getOneById(req.params.articleId, successCallback, errorCallback);
+});
+
+router.post('/updateArticle', function (req, res, next) {
+  var successCallback = function () { return res.sendStatus(200); };
+  var errorCallback = function () { return res.sendStatus(500); };
+  console.log("==================================")
+  console.log(req.body)
+
+  
+  ArticleDAO.updateContent(req.body.articleIdtoEdit, req.body.content, successCallback, errorCallback);
+  // ArticleDAO.getByUserId(req.user._id, successCallback, errorCallback);
+});
+
+
 
 
 
@@ -32,21 +51,21 @@ router.get('/like/:articleId', function (req, res, next) {
   var errorCallback = function () { return res.sendStatus(500); };
   var successCallback = function () { return res.sendStatus(200); };
 
-  var updateLikesCallback = function (article) { 
+  var updateLikesCallback = function (article) {
     // Article never ever had any like before
-    if(!article.likersIds){
+    if (!article.likersIds) {
       article.likersIds = [];
     }
 
     // The article has some likes already
-    else{
+    else {
       for (var i = 0; i < article.likersIds.length; i++) {
         if (article.likersIds[i].toString() === req.user._id.toString()) {
 
           article.likersIds.splice(i, 1);
           return ArticleDAO.updateLikersIds(article._id, article.likersIds, successCallback, errorCallback);
-          
-         
+
+
           // return res.sendStatus(500);
         }
       }
@@ -70,20 +89,20 @@ router.get('/poop/:articleId', function (req, res, next) {
   var errorCallback = function () { return res.sendStatus(500); };
   var successCallback = function () { return res.sendStatus(200); };
 
-  var updatePoopCallback = function (article) { 
+  var updatePoopCallback = function (article) {
     // Article never ever had any like before
-    if(!article.poopsIds){
+    if (!article.poopsIds) {
       article.poopsIds = [];
     }
 
     // The article has some likes already
-    else{
+    else {
       for (var i = 0; i < article.poopsIds.length; i++) {
         if (article.poopsIds[i].toString() === req.user._id.toString()) {
 
           article.poopsIds.splice(i, 1);
           return ArticleDAO.updatePoopsIds(article._id, article.poopsIds, successCallback, errorCallback);
-          
+
 
           // return res.sendStatus(500);
         }
@@ -96,7 +115,7 @@ router.get('/poop/:articleId', function (req, res, next) {
     // Update in DB
     ArticleDAO.updatePoopsIds(article._id, article.poopsIds, successCallback, errorCallback);
   };
-  
+
   ArticleDAO.getOneById(req.params.articleId, updatePoopCallback, errorCallback);
 });
 

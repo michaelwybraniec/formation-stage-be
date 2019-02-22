@@ -17,10 +17,17 @@ function getOneById(articleId, successCallback, errorCallback) {
     Article.findOne({ _id: articleId }, function (err, result) {
         var article = result;
         if (err) return errorCallback();
+        console.log(article);
         return successCallback(article);
     });
 };
 
+function updateContent(articleId, content, successCallback, errorCallback) {
+        Article.update({ _id: articleId }, { content: content }, function (err) {
+            if (err) return errorCallback();
+            return successCallback();
+        });
+    };
 
 
 function getByUserId(userId, successCallback, errorCallback) {
@@ -86,5 +93,6 @@ module.exports = {
     getOneById: getOneById,
     updateLikersIds: updateLikersIds,
     updatePoopsIds: updatePoopsIds,
-    deleteById: deleteById
+    deleteById: deleteById,
+    updateContent: updateContent,
 };
